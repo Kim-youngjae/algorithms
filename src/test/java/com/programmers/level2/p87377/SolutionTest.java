@@ -39,21 +39,21 @@ class SolutionTest {
     }
 
     @Test
-    @DisplayName("[0, 1, -1], [1, 0, -1], [1, 0, 1]의 교점")
+    @DisplayName("교점들, [0, 1, -1], [1, 0, -1], [1, 0, 1]")
     void t_4() {
         assertThat(
                 new Solution().intersections(
                         new int[][]{new int[]{0, 1, -1}, new int[]{1, 0, -1}, new int[]{1, 0, 1}}))
-                .isEqualTo(Set.of(Point.of(-1, 1), Point.of(1, 1)));
+                .isEqualTo(Points.of(Point.of(-1, 1), Point.of(1, 1)));
     }
 
     @Test
-    @DisplayName("[2, -1, 4], [-2, -1, 4], [0, -1, 1], [5, -8, -12], [5, 8, 12]의 교점")
+    @DisplayName("교점들, [2, -1, 4], [-2, -1, 4], [0, -1, 1], [5, -8, -12], [5, 8, 12]")
     void t_5() {
         assertThat(
                 new Solution().intersections(
                         new int[][]{new int[]{2, -1, 4}, new int[]{-2, -1, 4}, new int[]{0, -1, 1}, new int[]{5, -8, -12}, new int[]{5, 8, 12}}))
-                .isEqualTo(Set.of(Point.of(4, 1), Point.of(4, -4), Point.of(-4, -4), Point.of(-4, 1), Point.of(0, 4)));
+                .isEqualTo(Points.of(Point.of(4, 1), Point.of(4, -4), Point.of(-4, -4), Point.of(-4, 1), Point.of(0, 4)));
     }
 
     @Test
