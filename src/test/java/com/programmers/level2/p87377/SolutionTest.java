@@ -3,9 +3,6 @@ package com.programmers.level2.p87377;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-import java.util.Set;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -60,7 +57,7 @@ class SolutionTest {
     @DisplayName("매트릭스를 그리기 위한 최소점")
     void t_6() {
         assertThat(
-                new Solution().getMinPoint(Set.of(Point.of(1, 1), Point.of(1, -1))))
+                new Solution().getMinPoint(Points.of(Point.of(1, 1), Point.of(1, -1))))
                 .isEqualTo(Point.of(1, -1));
     }
 
@@ -68,7 +65,7 @@ class SolutionTest {
     @DisplayName("매트릭스를 그리기 위한 최대점")
     void t_7() {
         assertThat(
-                new Solution().getMaxPoint(Set.of(Point.of(1, 1), Point.of(1, -1))))
+                new Solution().getMaxPoint(Points.of(Point.of(1, 1), Point.of(1, -1))))
                 .isEqualTo(Point.of(1, 1));
     }
 
@@ -76,7 +73,7 @@ class SolutionTest {
     @DisplayName("emptyMatrix, [Point.of(4, -7), Point.of(-1, 6)]")
     void t_8() {
         assertThat(
-                new Solution().emptyMatrix(Set.of(Point.of(4, -7), Point.of(-1, 6)))
+                new Solution().emptyMatrix(Points.of(Point.of(4, -7), Point.of(-1, 6)))
         ).isEqualTo(
                 new char[][]{
                         {'.', '.', '.', '.', '.', '.'},
@@ -101,7 +98,7 @@ class SolutionTest {
     @DisplayName("emptyMatrix, [Point.of(1, 1), Point.of(-1, 1)]")
     void t9() {
         assertThat(
-                new Solution().emptyMatrix(Set.of(Point.of(1, 1), Point.of(-1, 1)))
+                new Solution().emptyMatrix(Points.of(Point.of(1, 1), Point.of(-1, 1)))
         ).isEqualTo(
                 new char[][]{
                         {'.', '.', '.'}
@@ -113,7 +110,7 @@ class SolutionTest {
     @DisplayName("transformToMatrix, [Point.of(1, 1), Point.of(-1, 1)]")
     void t10() {
         assertThat(
-                new Solution().pointToMatrix(Set.of(Point.of(1, 1), Point.of(-1, 1)))
+                new Solution().pointToMatrix(Points.of(Point.of(1, 1), Point.of(-1, 1)))
         ).isEqualTo(
                 new char[][]{
                         {'*', '.', '*'}
@@ -125,7 +122,7 @@ class SolutionTest {
     @DisplayName("transformToMatrix, [Point.of(4, -7), Point.of(-1, 6)]")
     void t7_2() {
         assertThat(
-                new Solution().pointToMatrix(Set.of(Point.of(4, -7), Point.of(-1, 6)))
+                new Solution().pointToMatrix(Points.of(Point.of(4, -7), Point.of(-1, 6)))
         ).isEqualTo(
                 new char[][]{
                         {'.', '.', '.', '.', '.', '*'},

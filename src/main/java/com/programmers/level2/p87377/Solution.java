@@ -1,9 +1,9 @@
 package com.programmers.level2.p87377;
 
-import java.awt.*;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static java.util.Arrays.fill;
 
@@ -15,7 +15,8 @@ class Solution {
     public String[] solution(int[][] line) {
         String[] answer = {};
 
-        Set<Point> points = intersections(line);
+        // TODO: Points로 고쳐야 함
+        Points points = intersections(line);
         char[][] matrix = pointToMatrix(points);
 
         /**
@@ -53,9 +54,9 @@ class Solution {
         return Point.of((long) x, (long) y);
     }
 
-
-    public Set<Point> intersections(int[][] lines) {
-        Set<Point> points = new HashSet<>();
+    // 교점들을 구하는 메서드
+    public Points intersections(int[][] lines) {
+        Points points = Points.of();
 
         for (int i = 0; i < lines.length; i++) {
             for (int j = i + 1; j < lines.length; j++) {
@@ -73,7 +74,7 @@ class Solution {
         return points;
     }
 
-    public static Point getMinPoint(Set<Point> points) {
+    public static Point getMinPoint(Points points) {
         long x = Long.MAX_VALUE;
         long y = Long.MAX_VALUE;
 
@@ -84,7 +85,7 @@ class Solution {
         return Point.of(x, y);
     }
 
-    public static Point getMaxPoint(Set<Point> points) {
+    public static Point getMaxPoint(Points points) {
         long x = Long.MIN_VALUE;
         long y = Long.MIN_VALUE;
 
@@ -95,7 +96,7 @@ class Solution {
         return Point.of(x, y);
     }
 
-    public static char[][] emptyMatrix(Set<Point> points) {
+    public static char[][] emptyMatrix(Points points) {
         Point maxPoint = getMaxPoint(points);
         Point minPoint = getMinPoint(points);
 
@@ -114,20 +115,20 @@ class Solution {
     }
 
     // 0, 0를 기준으로 그려지는 교점의 위치
-    public static Set<Point> getPositiveIntersections(Set<Point> points) {
+    public static Points getPositiveIntersections(Points points) {
         Point minPoint = getMinPoint(points);
-        Set<Point> posPoints = new HashSet<>();
 
-        for (Point point : points) {
-            posPoints.add(Point.of((point.x - minPoint.x), (point.y - minPoint.y)));
-        }
-
-        return posPoints;
+        // 매개변수로 배열을 줘야한다.
+        return Points.of(
+                points.stream()
+                        .map(p -> Point.of(p.x - minPoint.x, p.y - minPoint.y))
+                        .toArray(Point[]::new) // 최종적으로 배열로 들어가야하므로 배열로 바꿔줌
+        );
     }
 
-    public static char[][] pointToMatrix(Set<Point> points) {
+    public static char[][] pointToMatrix(Points points) {
         char[][] matrix1 = emptyMatrix(points);
-        Set<Point> posPoints = getPositiveIntersections(points);
+        Points posPoints = getPositiveIntersections(points);
 
         for (Point point : posPoints) {
             matrix1[(int) point.y][(int) point.x] = '*';
@@ -163,7 +164,8 @@ class Ut {
 }
 
 // 일급 컬렉션
-class Points {
+class Points implements Iterable<Point> {
+
     private final Set<Point> data;
 
     private Points(Set<Point> data) {
@@ -176,7 +178,7 @@ class Points {
     // Points.of(arg1, arg2);
     // Points.of(arg1, arg2, agr3);
     public static Points of(Point... pointArray) {
-        // 입력받은 배열을 HashSet 형태로 하다.
+        // 입력받은 배열을 HashSet 형태로 바꾼다.
         // Collectors.toSet()(-> immutable set으로 생성됨) 를 사용하지 않는 이유 : 우리는 mutable 한것을 원한다.
         // mutable : 수정가능
         // immutable : 수정불가능(add, remove 등이 안됨)
@@ -184,6 +186,36 @@ class Points {
                 Arrays.stream(pointArray)
                         .collect(Collectors.toCollection(HashSet::new))
         );
+    }
+
+    public boolean add(Point point) {
+        return data.add(point);
+    }
+
+    public Set<Point> toSet() {
+        return data;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Points points = (Points) o;
+        return Objects.equals(data, points.data);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(data);
+    }
+
+    @Override
+    public Iterator<Point> iterator() { // 클래스라서 반복할 때의 에러
+        return data.iterator();
+    }
+
+    public Stream<Point> stream() { // point를 반환하는 스트림 객체를 반환
+        return data.stream();
     }
 }
 
