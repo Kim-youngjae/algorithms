@@ -1,75 +1,67 @@
 package com.baekjoon.p1260;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
 
 public class Main {
-    static boolean[] visited; // 방문을 체크할 배열
     static int[][] nodes;
+    static boolean[] visited;
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
 
-    public static void main(String[] args) throws IOException {
+        int N = sc.nextInt();
+        int M = sc.nextInt();
+        int V = sc.nextInt(); // 시작 노드
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
+        nodes = new int[N][N];
+        visited = new boolean[N];
 
-        //정점 갯수, 간선 갯수, 시작 정점 노드 입력받기
-        st = new StringTokenizer(br.readLine(), " ");
+        for (int i = 0; i < M; i++) {
+            int r = sc.nextInt();
+            int c = sc.nextInt();
 
-        int n = Integer.valueOf(st.nextToken());
-        int m = Integer.valueOf(st.nextToken());
-        int v = Integer.valueOf(st.nextToken()); // 시작 위치
-
-        visited = new boolean[n];
-        nodes = new int[n][n];
-
-        for (int i = 0; i < m; i++) {
-            StringTokenizer st2 = new StringTokenizer(br.readLine(), " ");
-
-            int a = Integer.valueOf(st2.nextToken());
-            int b = Integer.valueOf(st2.nextToken());
-
-            nodes[a - 1][b - 1] = 1; //연결된 곳은 1로 표시
-            nodes[b - 1][a - 1] = 1;
+            nodes[r - 1][c - 1] = 1;
+            nodes[c - 1][r - 1] = 1;
         }
 
-        dfs(v - 1);
+        dfs(V - 1); //dfs 시작
 
-        Arrays.fill(visited, false);
         System.out.println();
 
-        bfs(v - 1);
+        visited = new boolean[N];
+        bfs(V - 1);
     }
 
-    public static void dfs(int v) {
-
-        System.out.print(v + 1 + " "); // 방문한 노드는 출력
-        visited[v] = true;
-
-        for (int i = 0; i < nodes.length; i++) {
-            if (nodes[v][i] == 1 && !visited[i]) { // 갈 수 있는 노드이고 방문하지 않은 노드이면
-                dfs(i);
-            }
-        }
-    }
-
-    public static void bfs(int v) {
+    private static void bfs(int start) {
         Queue<Integer> q = new LinkedList<>();
 
-        q.add(v);
-        visited[v] = true;
+        q.add(start);
+        visited[start] = true;
 
         while (!q.isEmpty()) {
-            int num = q.poll();
 
-            System.out.print(num + 1 + " "); // 뽑아서 확인
+            int node = q.poll();
+            System.out.printf("%d ", node + 1);
 
-            for (int i = 0; i < nodes.length ; i++) {
-                    if (nodes[num][i] == 1 && !visited[i]) {
-                    q.add(i); // 큐에 넣고
-                    visited[i] = true; // 방문했다고 표시
+            for (int i = 0; i < visited.length; i++) {
+                if (nodes[node][i] == 1 && !visited[i]) {
+                    q.add(i);
+                    visited[i] = true;
                 }
+            }
+        }
+
+    }
+
+    private static void dfs(int start) {
+        // 방문한 노드는 출력
+        System.out.printf("%d ", start + 1);
+        visited[start] = true;
+
+        for (int i = 0; i < visited.length; i++) {
+            if (nodes[start][i] == 1 && !visited[i]) {
+                dfs(i);
             }
         }
     }
