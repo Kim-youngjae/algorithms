@@ -11,10 +11,6 @@ public class Main {
     static long W;
     static long S;
 
-    static long minStraightMoveTwo;
-
-    static long totalTime = 0;
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
