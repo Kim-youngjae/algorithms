@@ -23,7 +23,7 @@ class Solution {
             int count = 0; // 횟수를 셀 count 변수
 
             for (int j = 0; j < targets[i].length(); j++) {
-                char c = targets[i].charAt(i);
+                char c = targets[i].charAt(j);
 
                 if (keyboard.containsKey(c)) {
                     count += keyboard.get(c); // 누를 수 있는 버튼이 있고 값이 있으면 더해줌
