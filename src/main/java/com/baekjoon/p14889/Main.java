@@ -41,14 +41,7 @@ public class Main {
             * 수행할 로직
             * 뽑고 나면 차이를 반환해야 함
             * */
-            int result = diff();
-
-            if (result == 0) {
-                return;
-            }
-
-            minValue = Math.min(minValue, result);
-
+            diff();
             return;
         }
 
@@ -61,7 +54,7 @@ public class Main {
         }
     }
 
-    private static int diff() {
+    private static void diff() {
         int start_team = 0;
         int link_team = 0;
 
@@ -78,7 +71,13 @@ public class Main {
             }
         }
 
-        // 능력치 차이
-        return Math.abs(start_team - link_team);
+        int gap = Math.abs(start_team - link_team);
+
+        if (gap == 0) {
+            System.out.println(0);
+            System.exit(0); // 전체 시스템 종료
+        }
+
+        minValue = Math.min(minValue, gap);
     }
 }
