@@ -6,8 +6,9 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int[] list;
     static boolean[] visit;
+    static int[] output;
+    static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -17,33 +18,28 @@ public class Main {
         int n = Integer.parseInt(st.nextToken());
         int m = Integer.parseInt(st.nextToken());
 
-        list = new int[n];
         visit = new boolean[n];
+        output = new int[m];
 
-        // 배열 초기화
-        for (int i = 0; i < n; i++) {
-            list[i] = i + 1;
-        }
+        permutation(n, m, 0);
 
-        int[] output = new int[n];
-
-        permutation(list, output, visit, 0, m);
-
+        System.out.println(sb);
     }
 
-    public static void permutation(int[] list, int[] output, boolean[] visit, int depth, int m) {
+    public static void permutation(int n, int m, int depth) {
         if (depth == m) {
-            for (int i = 0; i < m; i++) {
-                System.out.printf("%d ", output[i]);
+            for (int data : output) {
+                sb.append(data).append(" ");
             }
-            System.out.println();
+            sb.append("\n");
+            return;
         }
 
-        for (int i = 0; i < list.length; i++) {
+        for (int i = 0; i < n; i++) {
             if (!visit[i]) {
                 visit[i] = true;
-                output[depth] = list[i];
-                permutation(list, output, visit, depth + 1, m);
+                output[depth] = i + 1;
+                permutation(n, m, depth + 1);
                 visit[i] = false;
             }
         }
