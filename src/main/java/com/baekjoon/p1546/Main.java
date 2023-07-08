@@ -24,9 +24,9 @@ public class Main {
         }
 
         for (int i = 0; i < N; i++) {
-            sum += scores[i] / max * 100;
+            sum += scores[i];
         }
 
-        System.out.println(sum / N);
+        System.out.println(sum * 100.0 / max / N);
     }
 }
