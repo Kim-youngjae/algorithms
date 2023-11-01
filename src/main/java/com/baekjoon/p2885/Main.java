@@ -20,10 +20,10 @@ public class Main {
         while(K > 0) {
             if (K >= n) {
                 K -= n;
+                count++;
             }
             else {
                 n /= 2;
-                count++;
             }
         }
 
@@ -31,4 +31,3 @@ public class Main {
         System.out.println(count);
     }
 }
-
