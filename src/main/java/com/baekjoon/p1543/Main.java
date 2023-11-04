@@ -1,34 +1,21 @@
 package com.baekjoon.p1543;
 
-import java.util.Scanner;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        String sentences = sc.nextLine();
-        String pattern = sc.nextLine();
+        String document = br.readLine();
+        String word = br.readLine();
 
-        int lastIndex = 0;
-        int cnt = 0;
+        int wholeLength = document.length();
+        int changedLength = 0;
 
-        while (lastIndex < sentences.length()) {
+        document = document.replace(word, "");
 
-            int newIndex = sentences.indexOf(pattern, lastIndex); // 마지막 인덱스부터 시작
+        changedLength = wholeLength - document.length(); // 변경된 길이
 
-            if (newIndex == -1) {
-                // 없으면 0 리턴하고 종료
-                break;
-            }
-
-            if (newIndex >= lastIndex) { // 찾은 인덱스가 마지막 인덱스보다 크면
-                lastIndex = newIndex + pattern.length(); // 갱신
-                cnt++; // 횟수 카운트
-            } else {
-                lastIndex = newIndex + pattern.length();
-            }
-        }
-
-        System.out.println(cnt);
+        System.out.println(changedLength / word.length());
     }
 }
