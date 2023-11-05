@@ -1,36 +1,50 @@
 package com.baekjoon.p1260;
 
+import java.io.*;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Main {
     static int[][] nodes;
     static boolean[] visited;
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    static StringBuilder sb = new StringBuilder();
 
-        int N = sc.nextInt();
-        int M = sc.nextInt();
-        int V = sc.nextInt(); // 시작 노드
+    public static void main(String[] args) throws IOException {
 
-        nodes = new int[N][N];
-        visited = new boolean[N];
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
-        for (int i = 0; i < M; i++) {
-            int r = sc.nextInt();
-            int c = sc.nextInt();
+        int n = Integer.valueOf(st.nextToken());// 정점의 개수
 
-            nodes[r - 1][c - 1] = 1;
-            nodes[c - 1][r - 1] = 1;
+        // 간선의 수
+        int m = Integer.valueOf(st.nextToken());
+
+        // 시작 노드의 위치
+        int s = Integer.valueOf(st.nextToken());
+
+        nodes = new int[n][n];
+        visited = new boolean[n];
+
+        for (int i = 0; i < m; i++){
+            st = new StringTokenizer(br.readLine(), " ");
+
+            int row = Integer.valueOf(st.nextToken());
+            int col = Integer.valueOf(st.nextToken());
+
+            nodes[row - 1][col - 1] = 1;
+            nodes[col - 1][row - 1] = 1; // 양방향 간선이라서
         }
 
-        dfs(V - 1); //dfs 시작
+        dfs(s - 1);
 
-        System.out.println();
+        sb.append("\n");
 
-        visited = new boolean[N];
-        bfs(V - 1);
+        visited = new boolean[n]; // 방문노드 초기화
+
+        bfs(s - 1);
+
+        System.out.print(sb);
     }
 
     private static void bfs(int start) {
@@ -42,7 +56,7 @@ public class Main {
         while (!q.isEmpty()) {
 
             int node = q.poll();
-            System.out.printf("%d ", node + 1);
+            sb.append(node + 1 + " ");
 
             for (int i = 0; i < visited.length; i++) {
                 if (nodes[node][i] == 1 && !visited[i]) {
@@ -56,8 +70,8 @@ public class Main {
 
     private static void dfs(int start) {
         // 방문한 노드는 출력
-        System.out.printf("%d ", start + 1);
-        visited[start] = true;
+        sb.append(start + 1 + " ");
+        visited[start] = true; // 방문한 노드에 대해서 방문 표시
 
         for (int i = 0; i < visited.length; i++) {
             if (nodes[start][i] == 1 && !visited[i]) {
