@@ -30,22 +30,13 @@ public class Main {
             nodes[col - 1][row - 1] = 1;
         }
 
-        bfs(0);
-
-        int count = 0;
-
-        for (int i = 1; i < visited.length; i++) {
-            if (visited[i]) {
-                count++;
-            }
-        }
-
-        System.out.println(count);
+        System.out.println(bfs(0) - 1);
     }
 
 
-    private static void bfs(int start) {
+    private static int bfs(int start) {
         Queue<Integer> q = new LinkedList<>();
+        int count = 0;
 
         // 큐에 넣기
         q.add(start);
@@ -55,6 +46,7 @@ public class Main {
         while(!q.isEmpty()) {
             int temp = q.poll();
             visited[start] = true;
+            count++;
 
             for (int i = 0; i < visited.length; i++) {
                 if(nodes[temp][i] == 1 && !visited[i]) {
@@ -63,5 +55,7 @@ public class Main {
                 }
             }
         }
+
+        return count;
     }
 }
