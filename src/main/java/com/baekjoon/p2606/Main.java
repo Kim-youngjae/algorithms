@@ -1,8 +1,8 @@
 package com.baekjoon.p2606;
 
 import java.io.*;
-import java.util.LinkedList;
 import java.util.Queue;
+import java.util.LinkedList;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -18,9 +18,9 @@ public class Main {
         nodes = new int[n][n];
         visited = new boolean[n];
 
-        int m = Integer.valueOf(br.readLine());
+        int m = Integer.valueOf(br.readLine()); // 간선 수
 
-        for (int i = 0; i < m; i++) {
+        for (int i = 0; i < m; i++) { // 간선 수만큼 반복
             st = new StringTokenizer(br.readLine(), " ");
 
             int row = Integer.valueOf(st.nextToken());
@@ -33,7 +33,6 @@ public class Main {
         System.out.println(bfs(0) - 1);
     }
 
-
     private static int bfs(int start) {
         Queue<Integer> q = new LinkedList<>();
         int count = 0;
@@ -43,13 +42,12 @@ public class Main {
         // 방문처리
         visited[start] = true;
 
-        while(!q.isEmpty()) {
+        while (!q.isEmpty()) {
             int temp = q.poll();
-            visited[start] = true;
             count++;
 
             for (int i = 0; i < visited.length; i++) {
-                if(nodes[temp][i] == 1 && !visited[i]) {
+                if (nodes[temp][i] == 1 && !visited[i]) {
                     visited[i] = true;
                     q.add(i);
                 }
