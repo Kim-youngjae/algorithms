@@ -16,10 +16,8 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
         int n = Integer.valueOf(st.nextToken());// 정점의 개수
-
         // 간선의 수
         int m = Integer.valueOf(st.nextToken());
-
         // 시작 노드의 위치
         int s = Integer.valueOf(st.nextToken());
 
