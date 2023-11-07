@@ -5,78 +5,85 @@ import java.util.*;
 
 public class Main {
 
-    static int n;
     static int[][] node;
     static boolean[][] visited;
-    static int rainAmount = 0;
-    static int safeZone = 0;
-    static int totalCount = 0;
+    static int n;
 
     static int[] dirRow = { 1, 0, -1, 0 };
     static int[] dirCol = { 0, 1, 0, -1 };
 
     public static void main(String[] args) throws IOException {
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
 
         n = Integer.valueOf(br.readLine());
 
         node = new int[n][n];
-        visited = new boolean[n][n];
 
+        int maxHeight = 0;
+
+        // 가장 높은 높이랑 영역 초기화
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine(), " ");
 
             for (int j = 0; j < n; j++) {
                 node[i][j] = Integer.valueOf(st.nextToken());
+
+                if (node[i][j] >= maxHeight) {
+                    maxHeight = node[i][j];
+                }
             }
         }
 
-        while (rainAmount < n) {
-            // 비의 양을 계속 증가 시키면서 갯수를 세어야 함
+        int count = 0;
+        int safeZone = 0;
+
+        // 강수량을 증가시키면서 반복
+        for (int rain = 0; rain < maxHeight; rain++) {
+            count = 0;
+            visited = new boolean[n][n];
+
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
-                    if (node[i][j] > rainAmount && !visited[i][j]) {
-                        safeZone++; // 갈 수 있는 곳을 만나면 안전영역으로 추가
-                        bfs(i, j);
+                    if (rain < node[i][j] && !visited[i][j]) {
+                        count++;
+                        bfs(i, j, rain);
                     }
                 }
             }
 
-            if (totalCount < safeZone) {
-                totalCount = safeZone;
-                safeZone = 0;
-                visited = new boolean[n][n]; // 방문 노드 초기화
-            }
-            rainAmount++;
+            safeZone = Math.max(count, safeZone);
         }
 
-        System.out.println(totalCount);
-
+        System.out.println(safeZone);
     }
 
-    private static void bfs(int r, int c) {
+    private static void bfs(int r, int c, int rain) {
+
         Queue<int[]> q = new LinkedList<>();
 
         q.add(new int[] { r, c });
         visited[r][c] = true;
 
         while (!q.isEmpty()) {
-            int[] temp = q.poll();
 
-            int cr = temp[0];
-            int cc = temp[1];
+            int[] target = q.poll();
+
+            int cr = target[0];
+            int cc = target[1];
 
             for (int i = 0; i < 4; i++) {
                 int mr = cr + dirRow[i];
-                int mc = cc + dirRow[i];
+                int mc = cc + dirCol[i];
 
-                if (mc >= 0 && mc < n && mc > rainAmount && mr >= 0 && mr < n && mr > rainAmount) {
-                    q.add(new int[] { mr, mc });
-                    visited[mr][mc] = true;
+                if (mr >= 0 && mr < n && mc >= 0 && mc < n) {
+                    if (node[mr][mc] > rain && !visited[mr][mc]) {
+                        q.add(new int[] { mr, mc });
+                        visited[mr][mc] = true;
+                    }
                 }
             }
         }
     }
-
 }
