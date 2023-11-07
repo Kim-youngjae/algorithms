@@ -1,97 +1,82 @@
 package com.baekjoon.p2468;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    static int maxRain = Integer.MIN_VALUE; // 가장 많은 비의 양을 저장할 변수
-    static int minRain = Integer.MAX_VALUE; // 가장 적은 비의 양을 저장할 변수
-    static int N;
-    static int[][] region;
+
+    static int n;
+    static int[][] node;
     static boolean[][] visited;
-    static int[] safeZone; // 비의 양에 따른 안전영역의 갯수
-    static int[] dr = {0, 1, 0, -1};
-    static int[] dc = {-1, 0, 1, 0};
+    static int rainAmount = 0;
+    static int safeZone = 0;
+    static int totalCount = 0;
+
+    static int[] dirRow = { 1, 0, -1, 0 };
+    static int[] dirCol = { 0, 1, 0, -1 };
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
 
-        N = Integer.parseInt(br.readLine());
+        n = Integer.valueOf(br.readLine());
 
-        visited = new boolean[N][N];
-        region = new int[N][N];
+        node = new int[n][n];
+        visited = new boolean[n][n];
 
-        // 지역 초기화 및 최대, 최소 비 높이 설정
-        for (int i = 0; i < N; i++) {
-            st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < n; i++) {
+            st = new StringTokenizer(br.readLine(), " ");
 
-            for (int j = 0; j < N; j++) {
-                int height = Integer.parseInt(st.nextToken()); // 그 지역의 높이
-
-                if (height >= maxRain) { // 최대값보다 크면 최대 값으로 저장
-                    maxRain = height;
-                } else if (height <= minRain) {
-                    minRain = height; // 해당 값을 가장 비가 작게 올 때의 값으로 저장
-                }
-
-                region[i][j] = height;
+            for (int j = 0; j < n; j++) {
+                node[i][j] = Integer.valueOf(st.nextToken());
             }
         }
 
-        safeZone = new int[maxRain + 1];
-
-        for (int rain = 0; rain <= maxRain; rain++) {
-            visited = new boolean[N][N];
-
-            for (int j = 0; j < N; j++) {
-                for (int k = 0; k < N; k++) {
-                    if (region[j][k] > rain && !visited[j][k]) {
-                        bfs(j, k, rain);
-                        safeZone[rain]++;
+        while (rainAmount < n) {
+            // 비의 양을 계속 증가 시키면서 갯수를 세어야 함
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (node[i][j] > rainAmount && !visited[i][j]) {
+                        safeZone++; // 갈 수 있는 곳을 만나면 안전영역으로 추가
+                        bfs(i, j);
                     }
                 }
             }
-        }
 
-        int maxSafeZoneCnt = Integer.MIN_VALUE;
-
-        for (int i = 0; i < safeZone.length; i++) {
-            if (maxSafeZoneCnt <= safeZone[i]) {
-                maxSafeZoneCnt = safeZone[i];
+            if (totalCount < safeZone) {
+                totalCount = safeZone;
+                safeZone = 0;
+                visited = new boolean[n][n]; // 방문 노드 초기화
             }
+            rainAmount++;
         }
 
-        System.out.println(maxSafeZoneCnt);
+        System.out.println(totalCount);
+
     }
 
-    private static void bfs(int r, int c, int rain) {
+    private static void bfs(int r, int c) {
         Queue<int[]> q = new LinkedList<>();
 
-        q.add(new int[]{r, c});
+        q.add(new int[] { r, c });
         visited[r][c] = true;
 
         while (!q.isEmpty()) {
-            int[] cordi = q.poll();
+            int[] temp = q.poll();
 
-            int currRow = cordi[0];
-            int currCol = cordi[1];
+            int cr = temp[0];
+            int cc = temp[1];
 
             for (int i = 0; i < 4; i++) {
-                int nextRow = currRow + dr[i];
-                int nextCol = currCol + dc[i];
+                int mr = cr + dirRow[i];
+                int mc = cc + dirRow[i];
 
-                if (nextRow >= 0 && nextCol >= 0 && nextRow < N && nextCol < N) {
-                    if (region[nextRow][nextCol] > rain && !visited[nextRow][nextCol]) {
-                        q.add(new int[]{nextRow, nextCol});
-                        visited[nextRow][nextCol] = true;
-                    }
+                if (mc >= 0 && mc < n && mc > rainAmount && mr >= 0 && mr < n && mr > rainAmount) {
+                    q.add(new int[] { mr, mc });
+                    visited[mr][mc] = true;
                 }
             }
         }
     }
+
 }
