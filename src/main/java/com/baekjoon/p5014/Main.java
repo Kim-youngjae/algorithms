@@ -1,74 +1,63 @@
 package com.baekjoon.p5014;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    static int F;
-    static int S;
-    static int G;
-    static int U;
-    static int D;
+    static int F, S, G, U, D;
     static boolean[] visited;
+    static int result = -1;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
-        F = Integer.parseInt(st.nextToken());
-        S = Integer.parseInt(st.nextToken());
-        G = Integer.parseInt(st.nextToken());
-        U = Integer.parseInt(st.nextToken());
-        D = Integer.parseInt(st.nextToken());
+        F = Integer.valueOf(st.nextToken());
+        S = Integer.valueOf(st.nextToken());
+        G = Integer.valueOf(st.nextToken());
+        U = Integer.valueOf(st.nextToken());
+        D = Integer.valueOf(st.nextToken());
 
         visited = new boolean[F + 1];
 
-        bfs(S); // bfs 시작
+        bfs();
 
-
-    }
-
-    static void bfs(int S) {
-        Queue<Floor> queue = new LinkedList<>();
-
-        queue.add(new Floor(S, 0)); // 처음 값 큐에 넣기
-        visited[S] = true; // 방문처리
-
-        while (!queue.isEmpty()) {
-            Floor current = queue.poll();// 현재 층 수
-
-            if (current.floor == G) { // 현재 층이 목표 층이면 종료
-                System.out.println(current.cnt);
-                break;
-            }
-
-            if (current.floor + U <= F && !visited[current.floor + U]) { // 위로 갈 수 있는지 체크
-                queue.add(new Floor(current.floor + U, current.cnt + 1));
-                visited[current.floor + U] = true;
-            }
-
-            if (current.floor - D > 0 && !visited[current.floor - D]) { // 아래로 갈 수 있는지 체크
-                queue.add(new Floor(current.floor - D, current.cnt + 1));
-                visited[current.floor - D] = true;
-            }
-        }
-
-        if (!visited[G]) {
+        if (result == -1) {
             System.out.println("use the stairs");
+        } else {
+            System.out.println(result - 1);
         }
     }
-}
 
-class Floor {
-    int floor;
-    int cnt;
+    private static void bfs() {
+        Queue<Integer> q = new LinkedList<>();
 
-    public Floor(int floor, int cnt) {
-        this.floor = floor;
-        this.cnt = cnt;
+        int count = 0;
+
+        q.add(S);
+        visited[S] = true;
+
+        while (!q.isEmpty()) {
+            count++;
+            int length = q.size();
+
+            for (int i = 0; i < length; i++) {
+                int temp = q.poll();
+
+                if (temp == G) {
+                    result = count;
+                    return;
+                }
+
+                if (temp - D > 0 && !visited[temp - D]) {
+                    q.add(temp - D);
+                    visited[temp - D] = true;
+                }
+                if (temp + U <= F && !visited[temp + U]) {
+                    q.add(temp + U);
+                    visited[temp + U] = true;
+                }
+            }
+        }
     }
 }
