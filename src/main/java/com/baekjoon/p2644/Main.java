@@ -13,10 +13,11 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        n = Integer.valueOf(br.readLine());
+        n = Integer.valueOf(br.readLine()); // 전체 사람 수
 
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
+        // 찾고자 하는 관계
         int x = Integer.valueOf(st.nextToken()) - 1;
         int y = Integer.valueOf(st.nextToken()) - 1;
 
@@ -41,7 +42,7 @@ public class Main {
 
     private static void dfs(int start, int end, int depth) {
         visited[start] = true; // 방문한 노드에 대해서 방문 표시
-
+        // 탈출 조건
         if (start == end) {
             result = depth;
             return;
