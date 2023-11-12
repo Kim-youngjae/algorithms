@@ -1,60 +1,86 @@
 package com.baekjoon.p14503;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    static boolean[][] isCleaned; // 청소가 되었는지 안되었는지 체크
+    static int[][] map;
+    static boolean[][] visited;
+    static int[] dirRow = { -1, 0, 1, 0 };
+    static int[] dirCol = { 0, -1, 0, 1 };
+    static int count = 0;
+    static int n;
+    static int m;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
-        int n = Integer.valueOf(st.nextToken()); // 방의 크기
-        int m = Integer.valueOf(st.nextToken()); // 방의 크기
-
-        isCleaned = new boolean[n][m]; // 방 청소 구역 초기화
+        n = Integer.valueOf(st.nextToken());
+        m = Integer.valueOf(st.nextToken());
 
         st = new StringTokenizer(br.readLine(), " ");
-        int currX = Integer.valueOf(st.nextToken()); // 현재 청소기 x좌표
-        int currY = Integer.valueOf(st.nextToken()); // 현재 청소기 y좌표
 
-        // 청소 유무 표시
+        int r = Integer.valueOf(st.nextToken());
+        int c = Integer.valueOf(st.nextToken());
+        int d = Integer.valueOf(st.nextToken()); // 로봇 방향 0:북, 1:동, 2: 남, 3:서
+
+        map = new int[n][m];
+        visited = new boolean[n][m];
+
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine(), " ");
+
             for (int j = 0; j < m; j++) {
-                int dirt = Integer.valueOf(st.nextToken());
-                if (dirt == 0) {
-                    isCleaned[i][j] = false;
-                } else {
-                    isCleaned[i][j] = true;
-                }
+                map[i][j] = Integer.valueOf(st.nextToken());
             }
         }
 
-//        // 전체 배열 확인
-//        for (int i = 0; i < n; i++) {
-//            for (int j = 0; j < m; j++) {
-//                System.out.printf("%b ", isCleaned[i][j]);
-//            }
-//            System.out.println();
-//        }
+        bfs(r, c, d);
 
+        System.out.println(count);
+    }
 
-        //                  북  동  남  서
-        int[] directionX = {-1, 0, 1, 0};
-        int[] directionY = {0, 1, 0, -1};
+    private static void bfs(int row, int col, int dir) {
 
-        // 현재 칸이 아직 청소되지 않은 경우, 현재 칸을 청소한다.
-        if (!isCleaned[currX - 1][currY - 1]) {
-            isCleaned[currX - 1][currY - 1] = true;
+        Queue<int[]> q = new LinkedList<>();
+
+        q.add(new int[] { row, col, dir });
+        visited[row][col] = true;
+        map[row][col] = -1;
+        count++;
+
+        while (!q.isEmpty()) {
+            int[] robot = q.poll();
+            int cr = robot[0];
+            int cc = robot[1];
+            dir = robot[2];
+
+            for (int i = 0; i < 4; i++) {
+                dir = (dir + 3) % 4;
+
+                int mr = cr + dirRow[dir];
+                int mc = cc + dirCol[dir];
+
+                if (map[mr][mc] == 0 && !visited[mr][mc]) {
+                    map[mr][mc] = -1; // 청소처리
+                    q.add(new int[] { mr, mc, dir });
+                    visited[mr][mc] = true;
+                    count++;
+                }
+
+            }
+
+            int d = (dir + 2) % 4; // 현재 바라보는 방향의 반대 방향
+            int br = cr + dirRow[d];
+            int bc = cc + dirCol[d];
+
+            if (map[br][bc] != 1) {
+                q.add(new int[] { br, bc, dir });
+                visited[br][bc] = true;
+            }
         }
 
-        // 현재 칸의 주변 4칸 중 청소되지 않은 빈 칸이 없는 경우
-        for (int i = 3; i < 4; i++) { // 반시계방향으로 회전
-
-        }
     }
 }
