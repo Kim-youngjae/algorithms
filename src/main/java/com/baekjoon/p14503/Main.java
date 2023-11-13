@@ -7,7 +7,7 @@ public class Main {
     static int[][] map;
     static boolean[][] visited;
     static int[] dirRow = { -1, 0, 1, 0 };
-    static int[] dirCol = { 0, -1, 0, 1 };
+    static int[] dirCol = { 0, 1, 0, -1 };
     static int count = 0;
     static int n;
     static int m;
@@ -57,6 +57,7 @@ public class Main {
             int cc = robot[1];
             dir = robot[2];
 
+            // 반시계 회전
             for (int i = 0; i < 4; i++) {
                 dir = (dir + 3) % 4;
 
@@ -69,7 +70,6 @@ public class Main {
                     visited[mr][mc] = true;
                     count++;
                 }
-
             }
 
             int d = (dir + 2) % 4; // 현재 바라보는 방향의 반대 방향
