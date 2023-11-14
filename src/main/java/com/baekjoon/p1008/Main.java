@@ -9,5 +9,6 @@ public class Main {
         double b = sc.nextInt();
 
         System.out.println(a / b);
+        sc.close();
     }
 }

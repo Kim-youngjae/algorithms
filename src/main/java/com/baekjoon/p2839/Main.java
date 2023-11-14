@@ -22,9 +22,10 @@ public class Main {
             }
 
             if (input < 5 && input % 3 != 0) {
-                    System.out.println(-1);
-                    break;
+                System.out.println(-1);
+                break;
             }
         }
+        sc.close();
     }
 }

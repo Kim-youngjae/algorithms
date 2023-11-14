@@ -28,5 +28,6 @@ public class Main {
         }
 
         System.out.println(sum * 100.0 / max / N);
+        sc.close();
     }
 }

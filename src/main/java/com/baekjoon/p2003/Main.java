@@ -20,19 +20,19 @@ public class Main {
         int sum = 0;
         int cnt = 0;
 
-//        while (true) {
-//            if (sum == m) {
-//                cnt++;
-//            }
-//
-//            if (sum >= m) {
-//                sum -= numList[start++];
-//            } else if (end >= n) {
-//                break;
-//            } else {
-//                sum += numList[end++];
-//            }
-//        }
+        // while (true) {
+        // if (sum == m) {
+        // cnt++;
+        // }
+        //
+        // if (sum >= m) {
+        // sum -= numList[start++];
+        // } else if (end >= n) {
+        // break;
+        // } else {
+        // sum += numList[end++];
+        // }
+        // }
 
         while (end <= n) {
             if (sum >= m) {
@@ -49,5 +49,6 @@ public class Main {
         }
 
         System.out.println(cnt);
+        sc.close();
     }
 }

@@ -21,5 +21,6 @@ public class Main {
             System.out.println(al.get(i));
         }
         System.out.println((n1 * n2));
+        sc.close();
     }
 }

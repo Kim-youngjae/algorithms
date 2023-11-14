@@ -20,5 +20,6 @@ public class Main {
         while (sc.hasNextInt()) {
             System.out.println(d[sc.nextInt()]);
         }
+        sc.close();
     }
 }
