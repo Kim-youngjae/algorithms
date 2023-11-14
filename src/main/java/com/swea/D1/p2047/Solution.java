@@ -1,4 +1,4 @@
-package com.swea.p2047;
+package com.swea.D1.p2047;
 
 import java.util.Scanner;
 

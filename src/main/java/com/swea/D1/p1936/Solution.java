@@ -1,4 +1,4 @@
-package com.swea.p1936;
+package com.swea.D1.p1936;
 
 import java.util.*;
 

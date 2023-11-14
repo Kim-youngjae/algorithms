@@ -1,4 +1,4 @@
-package com.swea.p2027;
+package com.swea.D1.p2027;
 
 import java.util.*;
 
