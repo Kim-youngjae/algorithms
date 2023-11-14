@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-//        new Solution1().run();
+        // new Solution1().run();
         new Solution2().run();
     }
 }
@@ -39,10 +39,12 @@ class Solution1 {
         for (Device d : devices) {
             System.out.printf("%d %d\n", d.id, d.gas);
         }
+
+        sc.close();
     }
 }
 
-class Device{
+class Device {
     int id;
     int gas;
 

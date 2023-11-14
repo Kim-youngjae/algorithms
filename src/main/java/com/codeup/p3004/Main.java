@@ -40,6 +40,7 @@ class Sol {
         for (Data data : results) {
             System.out.printf("%d ", data.key);
         }
+        sc.close();
     }
 }
 

@@ -11,13 +11,15 @@ public class Main {
         int B = Integer.valueOf(inputBits[1]);
         int C = Integer.valueOf(inputBits[2]);
 
-//        첫째 줄에 (A+B)%C,
+        // 첫째 줄에 (A+B)%C,
         System.out.println((A + B) % C);
-//        둘째 줄에 ((A%C) + (B%C))%C,
+        // 둘째 줄에 ((A%C) + (B%C))%C,
         System.out.println(((A % C) + (B % C)) % C);
-//        셋째 줄에 (A×B)%C,
+        // 셋째 줄에 (A×B)%C,
         System.out.println((A * B) % C);
-//        넷째 줄에 ((A%C) × (B%C))%C를 출력한다.
+        // 넷째 줄에 ((A%C) × (B%C))%C를 출력한다.
         System.out.println(((A % C) * (B % C)) % C);
+
+        sc.close();
     }
 }
