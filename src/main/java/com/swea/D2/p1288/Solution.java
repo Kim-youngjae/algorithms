@@ -12,7 +12,6 @@ public class Solution {
             Set<Integer> set = new HashSet<>();
             int N = sc.nextInt();
             int num = 0;
-            int cnt = 0;
 
             while (set.size() < 10) {
                 num += N;
