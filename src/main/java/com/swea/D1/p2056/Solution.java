@@ -23,5 +23,7 @@ public class Solution {
                 System.out.printf("#%d %04d/%02d/%02d\n", i + 1, year, month, date);
             }
         }
+
+        sc.close();
     }
 }
