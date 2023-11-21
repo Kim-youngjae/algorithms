@@ -1,4 +1,4 @@
-package com.baekjoon.p11650;
+package com.baekjoon.p11651;
 
 import java.io.*;
 import java.util.*;
@@ -22,10 +22,10 @@ public class Main {
         }
 
         Collections.sort(list, (o1, o2) -> {
-            if (o1.x - o2.x > 0) {
+            if (o1.y - o2.y > 0) {
                 return 1;
-            } else if (o1.x - o2.x == 0) {
-                return o1.y - o2.y; // 같으면 y 비교
+            } else if (o1.y - o2.y == 0) {
+                return o1.x - o2.x; // 같으면 y 비교
             } else {
                 return -1;
             }
@@ -40,7 +40,6 @@ public class Main {
 }
 
 class Point {
-
     int x;
     int y;
 
