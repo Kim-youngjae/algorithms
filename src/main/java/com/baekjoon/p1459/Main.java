@@ -20,14 +20,13 @@ public class Main {
         W = Integer.valueOf(st.nextToken());
         S = Integer.valueOf(st.nextToken());
 
-        long case1, case2, case3, case4;
+        long case1, case2, case3;
 
         case1 = (X + Y) * W; // 평행으로만 이동
 
         if ((X + Y) % 2 == 0) {
             case2 = Math.max(X, Y) * S; // 대각선으로만 이동
-        }
-        else {
+        } else {
             case2 = (Math.max(X, Y) - 1) * S + W; // 대각선으로 이동, 좌표 합이 홀수라 평행이동을 해야할 때
         }
 

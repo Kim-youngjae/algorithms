@@ -1,17 +1,13 @@
 package com.baekjoon.p2891;
 
-
 import java.io.*;
 import java.util.StringTokenizer;
 
 public class Main {
 
     private static int N;
-    private static int S;
-    private static int R;
 
     private static int[] team;
-
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -19,8 +15,6 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
         N = Integer.valueOf(st.nextToken());
-        S = Integer.valueOf(st.nextToken());
-        R = Integer.valueOf(st.nextToken());
 
         team = new int[N];
 
@@ -30,13 +24,13 @@ public class Main {
 
         st = new StringTokenizer(br.readLine(), " ");
 
-        while(st.hasMoreTokens()) {
+        while (st.hasMoreTokens()) {
             team[Integer.valueOf(st.nextToken()) - 1] -= 1;
         }
 
         st = new StringTokenizer(br.readLine(), " ");
 
-        while(st.hasMoreTokens()) {
+        while (st.hasMoreTokens()) {
             team[Integer.valueOf(st.nextToken()) - 1] += 1;
         }
 
@@ -44,11 +38,9 @@ public class Main {
         for (int i = 0; i < N; i++) {
             if (i == 0) {
                 checkRight(i);
-            }
-            else if (i == N - 1) {
+            } else if (i == N - 1) {
                 checkLeft(i);
-            }
-            else {
+            } else {
                 checkLeft(i);
                 checkRight(i);
             }
@@ -57,7 +49,9 @@ public class Main {
         int count = 0;
 
         for (int i : team) {
-            if (i == 0) { count++; }
+            if (i == 0) {
+                count++;
+            }
         }
 
         System.out.println(count);
