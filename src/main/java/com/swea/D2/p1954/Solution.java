@@ -20,10 +20,8 @@ public class Solution {
             N = Integer.parseInt(br.readLine());
 
             map = new int[N][N];
-            visited = new boolean[N][N];
 
-            bfs(0, 0, 0);
-
+            startSnail(0, 0, 0);
             sb.append("#").append(t).append("\n");
             for (int i = 0; i < N; i++) {
                 for (int j = 0; j < N; j++) {
@@ -36,45 +34,17 @@ public class Solution {
         System.out.println(sb);
     }
 
-    private static void bfs(int r, int c, int d) {
-        Queue<Position> q = new LinkedList<>();
+    private static void startSnail(int r, int c, int d) {
+        for (int i = 1; i <= N * N; i++) {
+            map[r][c] = i;
 
-        q.add(new Position(r, c, d));
-        map[r][c] += 1;
-        visited[r][c] = true;
-
-        while (!q.isEmpty()) {
-            Position p = q.remove();
-
-            int nr = p.r + dirRow[p.d];
-            int nc = p.c + dirCol[p.d];
-            map[nr][nc] += 1; // 1씩 더해주기
-
-            if (nr > 0 && nr < N && nc > 0 && nc < N) {
-                // 범위 안에 있으면 계속 전진
-                if (!visited[nr][nc]) {
-                    q.add(new Position(nr, nc, p.d));
-                    visited[nr][nc] = true;
-                }
-            } else {
-                // 범위를 벗어나면 90도 틀어서 방향 바꿔주기
-                p.d += 1;
-                int rotatedRow = p.r + dirRow[p.d];
-                int rotatedCol = p.c + dirCol[p.d];
-                q.add(new Position(rotatedRow, rotatedCol, p.d));
+            if (r + dirRow[d] < 0 || r + dirRow[d] >= N || c + dirCol[d] < 0 || c + dirCol[d] >= N
+                    || map[r + dirRow[d]][c + dirCol[d]] != 0) {
+                d = (d + 1) % 4;
             }
+
+            r += dirRow[d];
+            c += dirCol[d];
         }
-    }
-}
-
-class Position {
-    int r;
-    int c;
-    int d;
-
-    public Position(int r, int c, int d) {
-        this.r = r;
-        this.c = c;
-        this.d = d;
     }
 }
