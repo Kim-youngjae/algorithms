@@ -1,7 +1,6 @@
 package com.swea.D2.p1954;
 
 import java.io.*;
-import java.util.*;
 
 public class Solution {
     static int N;
