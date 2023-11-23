@@ -27,7 +27,7 @@ public class Main {
             if (s1.kor == s2.kor) {
                 if (s1.eng == s2.eng) {
                     if (s1.math == s2.math) {
-                        return s1.compareTo(s2);
+                        return s1.name.compareTo(s2.name);
                     }
                     return s2.math - s1.math;
                 }
@@ -44,7 +44,8 @@ public class Main {
     }
 }
 
-class Student implements Comparable<Student> {
+class Student {
+    // implements Comparable<Student>
     String name;
     int kor; // 국어
     int eng; // 영어
@@ -57,9 +58,8 @@ class Student implements Comparable<Student> {
         this.math = math;
     }
 
-    @Override
-    public int compareTo(Student s) {
-        return this.name.compareTo(s.name);
-    }
-
+    // @Override
+    // public int compareTo(Student s) {
+    // return this.name.compareTo(s.name);
+    // }
 }

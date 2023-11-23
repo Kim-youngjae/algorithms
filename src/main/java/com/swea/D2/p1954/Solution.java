@@ -5,7 +5,6 @@ import java.io.*;
 public class Solution {
     static int N;
     static int[][] map;
-    static boolean[][] visited;
     static int[] dirRow = { 0, 1, 0, -1 };
     static int[] dirCol = { 1, 0, -1, 0 };
 
