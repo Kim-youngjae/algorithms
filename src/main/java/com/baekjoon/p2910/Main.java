@@ -14,7 +14,7 @@ public class Main {
 
         int N = Integer.parseInt(st.nextToken());
 
-        Map<Integer, Integer> map = new LinkedHashMap<>();
+        Map<Integer, Integer> map = new LinkedHashMap<>(); // 2: 3, 1: 2
 
         st = new StringTokenizer(br.readLine(), " ");
 
@@ -28,7 +28,7 @@ public class Main {
             }
         }
 
-        List<Integer> list = new ArrayList<>(map.keySet());
+        List<Integer> list = new ArrayList<>(map.keySet()); // 2, 1
 
         // Collections.sort(list, new Comparator<Integer>() { // list가 클래스가 아니어서 람다식으로
         // 비교가 안되는 것 같음
