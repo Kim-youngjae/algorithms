@@ -51,20 +51,4 @@ public class Solution {
 
         System.out.println(sb);
     }
-
-    private static void start(int t, StringBuilder sb) {
-        for (int i = 0; i < N - M + 1; i++) {
-            for (int j = 0; j < N - M + 1; j++) {
-                int sum = 0;
-
-                for (int r = 0; r < M; r++) {
-                    for (int c = 0; c < M; c++) {
-                        sum += map[i + r][j + c];
-                    }
-                }
-                max = Math.max(max, sum);
-            }
-        }
-        sb.append("#").append(t).append(" ").append(max).append("\n");
-    }
 }
