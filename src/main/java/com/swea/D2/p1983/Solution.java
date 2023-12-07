@@ -53,14 +53,16 @@ public class Solution {
             }
 
             int gradeIdx = 0;
-            while (idx >= rate) {
-                if (K == 0) {
-                    break;
-                } else {
-                    gradeIdx++;
-                    idx -= rate;
-                }
-            }
+            // while (idx >= rate) {
+            // if (K == 0) {
+            // break;
+            // } else {
+            // gradeIdx++;
+            // idx -= rate;
+            // }
+            // }
+
+            gradeIdx = idx / (N / 10);
 
             sb.append("#").append(t).append(" ").append(grade[gradeIdx]).append("\n");
         }
