@@ -24,12 +24,13 @@ public class Solution {
             while (st.hasMoreTokens()) {
                 int key = Integer.parseInt(st.nextToken());
                 map.put(key, map.getOrDefault(key, 0) + 1);
+            }
 
-                if (map.get(key) >= maxCount) {
-                    maxCount = map.get(key);
-                    maxValue = key;
+            for (int k : map.keySet()) {
+                if (map.get(k) >= maxCount) {
+                    maxCount = map.get(k);
+                    maxValue = Math.max(k, maxValue);
                 }
-
             }
 
             sb.append("#").append(tc).append(" ").append(maxValue).append("\n");
