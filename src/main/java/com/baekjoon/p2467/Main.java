@@ -14,29 +14,50 @@ public class Main {
             arr[i] = sc.nextInt();
         }
 
-        int left = 0;
-        int right = N - 1;
-
         long min = Long.MAX_VALUE;
         long l1 = 0;
         long l2 = 0;
 
-        while (left < right) {
-            long sum = arr[left] + arr[right];
-            if (min >= Math.abs(sum)) {
-                min = Math.abs(sum);
-                l1 = arr[left];
-                l2 = arr[right];
-            }
+        for (int i = 0; i < N; i++) {
 
-            if (sum >= 0) {
-                right--;
-            } else {
-                left++;
+            int left = i + 1;
+            int right = N - 1;
+
+            while (left <= right) {
+                int mid = (left + right) / 2;
+
+                long sum = arr[i] + arr[mid];
+
+                if (min >= Math.abs(sum)) {
+                    min = Math.abs(sum);
+                    l1 = arr[i];
+                    l2 = arr[mid];
+                }
+
+                if (sum >= 0) {
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
             }
         }
 
         System.out.println(l1 + " " + l2);
+
+        // while (left < right) {
+        // long sum = arr[left] + arr[right];
+        // if (min >= Math.abs(sum)) {
+        // min = Math.abs(sum);
+        // l1 = arr[left];
+        // l2 = arr[right];
+        // }
+
+        // if (sum >= 0) {
+        // right--;
+        // } else {
+        // left++;
+        // }
+        // }
         sc.close();
     }
 }
