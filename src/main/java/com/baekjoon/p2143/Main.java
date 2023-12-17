@@ -12,50 +12,65 @@ public class Main {
         int n = Integer.parseInt(br.readLine());
 
         int[] arrA = new int[n];
-        int sum = 0;
-        int[] accumA = new int[n];
 
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
         for (int i = 0; i < n; i++) {
             arrA[i] = Integer.parseInt(st.nextToken());
-            sum += arrA[i];
-            accumA[i] += sum;
         }
 
         int m = Integer.parseInt(br.readLine());
         int[] arrB = new int[m];
-        int[] accumB = new int[m];
-        sum = 0;
 
         st = new StringTokenizer(br.readLine(), " ");
         for (int i = 0; i < m; i++) {
             arrB[i] = Integer.parseInt(st.nextToken());
-            sum += arrB[i];
-            accumB[i] += sum;
         }
 
-        Arrays.sort(accumA);
-        Arrays.sort(accumB);
+        List<Integer> accumA = new ArrayList<>();
+        List<Integer> accumB = new ArrayList<>();
 
+        for (int i = 0; i < n; i++) {
+            int sum = 0;
+            for (int j = i; j < n; j++) {
+                sum += arrA[j];
+                accumA.add(sum);
+            }
+        }
+
+        for (int i = 0; i < m; i++) {
+            int sum = 0;
+            for (int j = i; j < m; j++) {
+                sum += arrB[j];
+                accumB.add(sum);
+            }
+        }
+
+        Collections.sort(accumA);
+        Collections.sort(accumB);
+
+        System.out.println(count(accumA, accumB, T));
+    }
+
+    private static long count(List<Integer> accumA, List<Integer> accumB, int T) {
         int pa = 0;
-        int pb = accumB.length - 1;
-        int cnt = 0; // 가능한 쌍의 개수를 저장할 변수
+        int pb = accumB.size() - 1;
+        long cnt = 0; // 가능한 쌍의 개수를 저장할 변수
 
-        while (pa < accumA.length && pb >= 0) { // 두 배열을 넘어가지 않을 동안 반복
-            int total = accumA[pa] + accumB[pb];
+        while (pa < accumA.size() && pb >= 0) { // 두 배열을 넘어가지 않을 동안 반복
+            int total = accumA.get(pa) + accumB.get(pb);
 
             if (total == T) {
-                int aCnt = 0;
-                int bCnt = 0;
+                long aCnt = 0;
+                long bCnt = 0;
 
-                int a = accumA[pa];
-                int b = accumB[pb];
+                int a = accumA.get(pa);
+                int b = accumB.get(pb);
 
-                while (pa < accumA.length && accumA[pa] == a) {
+                while (pa < accumA.size() && accumA.get(pa) == a) {
                     aCnt++;
                     pa++;
                 }
-                while (pb >= 0 && accumB[pb] == b) {
+                while (pb >= 0 && accumB.get(pb) == b) {
                     bCnt++;
                     pb--;
                 }
@@ -66,10 +81,8 @@ public class Main {
             } else if (total < T) {
                 pa++;
             }
-
         }
 
-        System.out.println(cnt);
-
+        return cnt;
     }
 }
