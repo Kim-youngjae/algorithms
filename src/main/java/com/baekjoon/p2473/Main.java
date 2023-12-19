@@ -21,6 +21,8 @@ public class Main {
         // 용액 특성 계산하기
         long[] answer = calculate(N, arr);
 
+        Arrays.sort(answer);
+
         for (long l : answer) {
             System.out.print(l + " ");
         }
@@ -35,25 +37,25 @@ public class Main {
             int right = N - 1;
 
             while (left < right) {
-                long sum = arr[i] + arr[left] + arr[right];
+                long sum = (long) arr[i] + arr[left] + arr[right]; // 원인 -> 더해준 값을 할당하기전 캐스팅을 해주지 않아서 통과가 안되었다.
                 long absSum = Math.abs(sum);
 
                 if (absSum < min) {
-                    min = Math.abs(sum);
+                    min = absSum;
                     result[0] = arr[i];
                     result[1] = arr[left];
                     result[2] = arr[right];
                 }
 
-                if (sum > 0) {
+                if (sum == 0) {
+                    break;
+                } else if (sum > 0) {
                     right--;
                 } else {
                     left++;
                 }
             }
         }
-
-        Arrays.sort(result);
 
         return result;
     }
