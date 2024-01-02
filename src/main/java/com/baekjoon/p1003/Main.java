@@ -13,7 +13,7 @@ public class Main {
         for (int t = 0; t < T; t++) {
             int N = sc.nextInt();
 
-            int[][] dp = new int[N + 1][2];
+            int[][] dp = new int[41][2];
             dp[0][0] = 1;
             dp[0][1] = 0;
             dp[1][0] = 0;
