@@ -11,44 +11,30 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        Stack<Integer> sequence = new Stack<>();
-        s = new Stack<>();
-        r = new Stack<>();
-
         int N = Integer.parseInt(br.readLine());
+
+        int[] seq = new int[N];
+        s = new Stack<>();
 
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
         for (int i = 0; i < N; i++) {
-            sequence.push(Integer.parseInt(st.nextToken()));
+            seq[i] = Integer.parseInt(st.nextToken());
         }
 
-        s.push(sequence.pop());
-        r.push(-1);
-
-        while (!sequence.isEmpty()) {
-            int temp = sequence.pop();
-
-            while (!s.isEmpty()) {
-                if (s.isEmpty()) {
-                    s.push(temp);
-                    r.push(-1);
-                    break;
-                } else {
-                    int target = s.peek();
-
-                    if (temp < target) {
-                        s.push(temp);
-                        r.push(target);
-                        break;
-                    } else {
-                        s.pop();
-                    }
-                }
+        for (int i = 0; i < N; i++) {
+            while (!s.isEmpty() && seq[i] > seq[s.peek()]) {
+                seq[s.pop()] = seq[i];
             }
+
+            s.push(i);
         }
 
-        while (!r.isEmpty()) {
-            bw.write(r.pop() + " ");
+        while (!s.isEmpty()) {
+            seq[s.pop()] = -1;
+        }
+
+        for (int i : seq) {
+            bw.write(i + " ");
         }
 
         bw.flush();
