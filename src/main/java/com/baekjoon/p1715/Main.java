@@ -18,8 +18,6 @@ public class Main {
         int sum = 0;
         int total = 0;
 
-        // List<Integer> sumList = new ArrayList<>();
-
         for (int i = 0; i < N - 1; i++) {
             int A = pq.remove();
             int B = pq.remove();
@@ -27,12 +25,6 @@ public class Main {
             pq.offer(sum);
             total += sum;
         }
-
-        // sum = 0;
-
-        // for (int i : sumList) {
-        // sum += i;
-        // }
 
         System.out.println(total);
         br.close();
