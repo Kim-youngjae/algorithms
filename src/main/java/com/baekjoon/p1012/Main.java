@@ -44,7 +44,7 @@ public class Main {
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < m; j++) {
                     if (!visit[i][j] && map[i][j] == 1) {
-                        bfs(i, j);
+                        dfs(i, j);
                         result++;
                     }
                 }
@@ -56,29 +56,17 @@ public class Main {
         System.out.println(sb);
     }
 
-    private static int bfs(int r, int c) {
-        Queue<Node> q = new LinkedList<>();
-        int count = 0;
-
-        q.add(new Node(r, c));
+    private static void dfs(int r, int c) {
         visit[r][c] = true;
 
-        while (!q.isEmpty()) {
-            Node node = q.poll();
-            count++;
+        for (int i = 0; i < 4; i++) {
+            int cr = r + dr[i];
+            int cc = c + dc[i];
 
-            for (int i = 0; i < 4; i++) {
-                int cr = node.r + dr[i];
-                int cc = node.c + dc[i];
-
-                if (cr >= 0 && cr < n && cc >= 0 && cc < m && !visit[cr][cc] && map[cr][cc] == 1) {
-                    q.add(new Node(cr, cc));
-                    visit[cr][cc] = true;
-                }
+            if (cr >= 0 && cr < n && cc >= 0 && cc < m && !visit[cr][cc] && map[cr][cc] == 1) {
+                dfs(cr, cc);
             }
         }
-
-        return count;
     }
 }
 
