@@ -11,6 +11,7 @@ public class Main {
     static int[] dr = { 1, 0, -1, 0 };
     static int[] dc = { 0, 1, 0, -1 };
     static int painting;
+    static int size;
 
     public static void main(String[] args) throws IOException {
 
@@ -36,7 +37,11 @@ public class Main {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 if (nodes[i][j] == 1 && !visit[i][j]) {
-                    max = Math.max(max, bfs(i, j));
+                    // max = Math.max(max, bfs(i, j));
+                    painting++;
+                    size = 0;
+                    dfs(i, j);
+                    max = Math.max(max, size);
                 }
             }
         }
@@ -70,6 +75,20 @@ public class Main {
         }
 
         return size;
+    }
+
+    private static void dfs(int r, int c) {
+        visit[r][c] = true;
+        size++;
+
+        for (int i = 0; i < 4; i++) {
+            int cr = r + dr[i];
+            int cc = c + dc[i];
+
+            if (cr >= 0 && cr < n && cc >= 0 && cc < m && !visit[cr][cc] && nodes[cr][cc] == 1) {
+                dfs(cr, cc);
+            }
+        }
     }
 }
 
