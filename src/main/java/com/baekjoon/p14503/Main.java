@@ -34,7 +34,7 @@ public class Main {
                 map[i][j] = Integer.valueOf(st.nextToken());
             }
         }
-        count++; // 현재칸 청소
+        count++; // 현재칸 청소 DFS용
         // bfs(r, c, d);
         dfs(r, c, d);
 
@@ -54,6 +54,8 @@ public class Main {
                 dfs(nr, nc, left);
                 count++;
                 return;
+            } else {
+                d = left;
             }
         }
 
