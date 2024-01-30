@@ -34,10 +34,36 @@ public class Main {
                 map[i][j] = Integer.valueOf(st.nextToken());
             }
         }
-
-        bfs(r, c, d);
+        count++; // 현재칸 청소
+        // bfs(r, c, d);
+        dfs(r, c, d);
 
         System.out.println(count);
+    }
+
+    private static void dfs(int r, int c, int d) {
+
+        map[r][c] = -1;
+
+        for (int i = 0; i < 4; i++) {
+            int left = (d + 3) % 4;
+            int nr = r + dr[left];
+            int nc = c + dc[left];
+
+            if (map[nr][nc] == 0) {
+                dfs(nr, nc, left);
+                count++;
+                return;
+            }
+        }
+
+        int back = (d + 2) % 4;
+        int nr = r + dr[back];
+        int nc = c + dc[back];
+
+        if (map[nr][nc] != 1) {
+            dfs(nr, nc, d);
+        }
     }
 
     private static void bfs(int r, int c, int d) {
