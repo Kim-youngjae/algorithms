@@ -5,9 +5,8 @@ import java.util.*;
 
 public class Main {
     static int[][] map;
-    static boolean[][] visited;
-    static int[] dirRow = { -1, 0, 1, 0 };
-    static int[] dirCol = { 0, 1, 0, -1 };
+    static int[] dr = { -1, 0, 1, 0 };
+    static int[] dc = { 0, 1, 0, -1 };
     static int count = 0;
     static int n;
     static int m;
@@ -27,7 +26,6 @@ public class Main {
         int d = Integer.valueOf(st.nextToken()); // 로봇 방향 0:북, 1:동, 2: 남, 3:서
 
         map = new int[n][m];
-        visited = new boolean[n][m];
 
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine(), " ");
@@ -42,45 +40,60 @@ public class Main {
         System.out.println(count);
     }
 
-    private static void bfs(int row, int col, int dir) {
+    private static void bfs(int r, int c, int d) {
+        Queue<Node> q = new LinkedList<>();
 
-        Queue<int[]> q = new LinkedList<>();
-
-        q.add(new int[] { row, col, dir });
-        visited[row][col] = true;
-        map[row][col] = -1;
-        count++;
+        q.add(new Node(r, c));
 
         while (!q.isEmpty()) {
-            int[] robot = q.poll();
-            int cr = robot[0];
-            int cc = robot[1];
-            dir = robot[2];
+            Node node = q.poll();
 
-            // 반시계 회전
+            // 현재 칸 청소되지 않은 경우 현재 칸을 청소
+            if (map[node.r][node.c] == 0) {
+                map[node.r][node.c] = -1;
+                count++;
+            }
+
+            boolean flag = false;
+
+            // 주변 4칸 확인
             for (int i = 0; i < 4; i++) {
-                dir = (dir + 3) % 4;
-
-                int mr = cr + dirRow[dir];
-                int mc = cc + dirCol[dir];
-
-                if (map[mr][mc] == 0 && !visited[mr][mc]) {
-                    map[mr][mc] = -1; // 청소처리
-                    q.add(new int[] { mr, mc, dir });
-                    visited[mr][mc] = true;
-                    count++;
+                int left = (d + 3) % 4;
+                int cr = node.r + dr[left];
+                int cc = node.c + dc[left];
+                // 청소되지 않은 칸이 있으면 큐에 넣기
+                if (map[cr][cc] == 0) {
+                    d = left; // 왼쪽으로 돌린 방향으로 업데이트
+                    q.add(new Node(cr, cc));
+                    flag = true;
+                    break;
+                } else {
+                    d = left;
                 }
             }
 
-            int d = (dir + 2) % 4; // 현재 바라보는 방향의 반대 방향
-            int br = cr + dirRow[d];
-            int bc = cc + dirCol[d];
+            if (!flag) {
+                // 주변 4칸을 확인했을 때 모두 청소되어 있지 않은 경우
+                int back = (d + 2) % 4;
+                int cr = node.r + dr[back];
+                int cc = node.c + dc[back];
 
-            if (map[br][bc] != 1) {
-                q.add(new int[] { br, bc, dir });
-                visited[br][bc] = true;
+                if (map[cr][cc] == 1) {
+                    break;
+                } else {
+                    q.add(new Node(cr, cc));
+                }
             }
         }
+    }
+}
 
+class Node {
+    int r;
+    int c;
+
+    Node(int r, int c) {
+        this.r = r;
+        this.c = c;
     }
 }
