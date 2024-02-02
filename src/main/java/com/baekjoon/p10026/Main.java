@@ -17,6 +17,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
 
         n = Integer.parseInt(br.readLine());
 
@@ -30,46 +31,49 @@ public class Main {
             }
         }
 
+        int result = 0;
+
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (!visit[i][j]) {
-                    if (map[i][j] == 'R') {
-                        bfs(i, j, 'R');
-                        R++;
-                    } else if (map[i][j] == 'G') {
-                        bfs(i, j, 'G');
-                        G++;
-                    } else if (map[i][j] == 'B') {
-                        bfs(i, j, 'B');
-                        B++;
-                    }
+                    bfs(i, j);
+                    result++;
                 }
             }
         }
 
+        sb.append(result + "\n");
+
+        result = 0;
         visit = new boolean[n][n];
 
+        // R과 B를 똑같이 맞춰줌
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if (!visit[i][j]) {
-                    if (map[i][j] == 'R' || map[i][j] == 'G') {
-                        bfs(i, j);
-                        CB++;
-                    }
+                if (map[i][j] == 'R') {
+                    map[i][j] = 'G';
                 }
             }
         }
 
-        StringBuilder sb = new StringBuilder();
+        // 색맹 계산
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (!visit[i][j]) {
+                    bfs(i, j);
+                    result++;
+                }
+            }
+        }
 
-        sb.append((R + G + B) + "\n");
-        sb.append((CB + B));
+        sb.append(result);
+
         System.out.println(sb);
     }
 
-    // 색맹 계산
     private static void bfs(int r, int c) {
         Queue<int[]> q = new LinkedList<>();
+        char target = map[r][c];
 
         q.add(new int[] { r, c });
         visit[r][c] = true;
@@ -83,33 +87,7 @@ public class Main {
                 int nr = cr + dr[i];
                 int nc = cc + dc[i];
 
-                if (nr >= 0 && nr < n && nc >= 0 && nc < n && !visit[nr][nc]) {
-                    if (map[nr][nc] == 'R' || map[nr][nc] == 'G') {
-                        q.add(new int[] { nr, nc });
-                        visit[nr][nc] = true;
-                    }
-                }
-            }
-        }
-    }
-
-    // 정상 구분 계산
-    private static void bfs(int r, int c, char val) {
-        Queue<int[]> q = new LinkedList<>();
-
-        q.add(new int[] { r, c });
-        visit[r][c] = true;
-
-        while (!q.isEmpty()) {
-            int[] temp = q.poll();
-            int cr = temp[0];
-            int cc = temp[1];
-
-            for (int i = 0; i < 4; i++) {
-                int nr = cr + dr[i];
-                int nc = cc + dc[i];
-
-                if (nr >= 0 && nr < n && nc >= 0 && nc < n && !visit[nr][nc] && map[nr][nc] == val) {
+                if (nr >= 0 && nr < n && nc >= 0 && nc < n && !visit[nr][nc] && map[nr][nc] == target) {
                     q.add(new int[] { nr, nc });
                     visit[nr][nc] = true;
                 }
