@@ -4,78 +4,76 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-
-    static StringBuilder sb = new StringBuilder();
-    static int[][] node = new int[25][25];
-    static boolean[][] visited = new boolean[25][25];
-
-    static int[] dirR = new int[] { 1, 0, -1, 0 };
-    static int[] dirC = new int[] { 0, 1, 0, -1 };
-
-    static int houseCount = 0; // 건물 개수
-    static int[] range = new int[25 * 25]; // 평수
-    static int n;
+    static int[][] map;
+    static boolean[][] visit;
+    static int[] dr = { -1, 0, 1, 0 };
+    static int[] dc = { 0, 1, 0, -1 };
+    static int n, m;
 
     public static void main(String[] args) throws IOException {
-        // 입력
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        // 지도의 크기
-        n = Integer.valueOf(br.readLine());
+        n = Integer.parseInt(br.readLine());
+
+        map = new int[n][n];
+        visit = new boolean[n][n];
 
         for (int i = 0; i < n; i++) {
             String str = br.readLine();
-
             for (int j = 0; j < n; j++) {
-                node[i][j] = str.charAt(j) - '0';
+                map[i][j] = str.charAt(j) - '0';
             }
         }
+
+        List<Integer> section = new ArrayList<>();
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if (node[i][j] == 1 && !visited[i][j]) {
-                    houseCount++;
-                    bfs(i, j);
+                if (!visit[i][j] && map[i][j] == 1) {
+                    section.add(bfs(i, j));
                 }
             }
         }
 
-        Arrays.sort(range);
+        StringBuilder sb = new StringBuilder();
 
-        System.out.println(houseCount);
+        sb.append(section.size() + "\n");
 
-        for (int i : range) {
-            if (i != 0) {
-                System.out.println(i + 1);
-            }
+        Collections.sort(section);
+
+        for (int i : section) {
+            sb.append(i + "\n");
         }
 
+        System.out.println(sb);
     }
 
-    public static void bfs(int r, int c) {
+    private static int bfs(int r, int c) {
         Queue<int[]> q = new LinkedList<>();
+        int size = 0;
 
-        q.add(new int[] { r, c }); // 노드 큐에 넣기
-        visited[r][c] = true; // 방문 처리
+        q.add(new int[] { r, c });
+        visit[r][c] = true;
+        size++;
 
         while (!q.isEmpty()) {
-            int[] target = q.poll();
-
-            int cr = target[0]; // current
-            int cc = target[1];
+            int[] temp = q.poll();
+            int cr = temp[0];
+            int cc = temp[1];
 
             for (int i = 0; i < 4; i++) {
-                int mr = cr + dirR[i];
-                int mc = cc + dirC[i];
+                int nr = cr + dr[i];
+                int nc = cc + dc[i];
 
-                if (mr >= 0 && mr < n && mc >= 0 && mc < n) {
-                    if (node[mr][mc] == 1 && !visited[mr][mc]) {
-                        q.add(new int[] { mr, mc });
-                        visited[mr][mc] = true;
-                        range[houseCount]++;
-                    }
+                if (nr >= 0 && nr < n && nc >= 0 && nc < n && !visit[nr][nc] && map[nr][nc] == 1) {
+                    q.add(new int[] { nr, nc });
+                    visit[nr][nc] = true;
+                    size++;
                 }
             }
         }
+
+        return size;
+
     }
 }
