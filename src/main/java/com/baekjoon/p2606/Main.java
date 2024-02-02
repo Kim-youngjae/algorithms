@@ -1,59 +1,43 @@
 package com.baekjoon.p2606;
 
 import java.io.*;
-import java.util.Queue;
-import java.util.LinkedList;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
-    static int[][] nodes;
-    static boolean[] visited;
+    static int[][] map;
+    static boolean[] visit;
+    static int n, m, result;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
 
-        int n = Integer.valueOf(br.readLine());
+        n = Integer.parseInt(br.readLine());
 
-        nodes = new int[n][n];
-        visited = new boolean[n];
+        visit = new boolean[n];
+        map = new int[n][n];
 
-        int m = Integer.valueOf(br.readLine()); // 간선 수
+        m = Integer.parseInt(br.readLine());
 
-        for (int i = 0; i < m; i++) { // 간선 수만큼 반복
-            st = new StringTokenizer(br.readLine(), " ");
+        for (int i = 0; i < m; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int r = Integer.parseInt(st.nextToken());
+            int c = Integer.parseInt(st.nextToken());
 
-            int row = Integer.valueOf(st.nextToken());
-            int col = Integer.valueOf(st.nextToken());
-
-            nodes[row - 1][col - 1] = 1;
-            nodes[col - 1][row - 1] = 1;
+            map[r - 1][c - 1] = map[c - 1][r - 1] = 1;
         }
 
-        System.out.println(bfs(0) - 1);
+        dfs(0);
+        System.out.println(result);
     }
 
-    private static int bfs(int start) {
-        Queue<Integer> q = new LinkedList<>();
-        int count = 0;
+    private static void dfs(int start) {
+        visit[start] = true;
 
-        // 큐에 넣기
-        q.add(start);
-        // 방문처리
-        visited[start] = true;
-
-        while (!q.isEmpty()) {
-            int temp = q.poll();
-            count++;
-
-            for (int i = 0; i < visited.length; i++) {
-                if (nodes[temp][i] == 1 && !visited[i]) {
-                    visited[i] = true;
-                    q.add(i);
-                }
+        for (int i = 0; i < n; i++) {
+            if (!visit[i] && map[start][i] == 1) {
+                result++;
+                dfs(i);
             }
         }
-
-        return count;
     }
 }
