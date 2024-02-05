@@ -36,7 +36,8 @@ public class Main {
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
                     if (!visit[i][j] && map[i][j] > rain) {
-                        bfs(i, j, rain);
+                        // bfs(i, j, rain);
+                        dfs(i, j, rain);
                         cnt++;
                     }
                 }
@@ -66,6 +67,19 @@ public class Main {
                     q.add(new int[] { nr, nc });
                     visit[nr][nc] = true;
                 }
+            }
+        }
+    }
+
+    private static void dfs(int r, int c, int rain) {
+        visit[r][c] = true;
+
+        for (int i = 0; i < 4; i++) {
+            int nr = r + dr[i];
+            int nc = c + dc[i];
+
+            if (nr >= 0 && nr < n && nc >= 0 && nc < n && !visit[nr][nc] && map[nr][nc] > rain) {
+                dfs(nr, nc, rain);
             }
         }
     }
