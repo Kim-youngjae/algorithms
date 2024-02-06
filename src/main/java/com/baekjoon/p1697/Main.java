@@ -1,65 +1,51 @@
 package com.baekjoon.p1697;
 
+import java.io.*;
 import java.util.*;
 
 public class Main {
+    static int[] arr = new int[100001];
+    static int n, k;
 
-    static int limit = 100001;
-    static int[] node;
-    static boolean[] visited;
-    static int time = 0;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        // 입력 받기
-        int n = sc.nextInt(); // 수빈 위치
-        int k = sc.nextInt(); // 동생 위치
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        // 초기화
-        node = new int[limit];
-        visited = new boolean[limit];
+        n = Integer.parseInt(st.nextToken());
+        k = Integer.parseInt(st.nextToken());
 
-        if (n == k) {
-            System.out.println(0);
-        } else {
-            bfs(n, k);
-            System.out.println(time);
-        }
-
-        sc.close();
+        bfs(n);
+        System.out.println(arr[k]);
     }
 
-    private static void bfs(int n, int k) {
-
+    private static void bfs(int val) {
         Queue<Integer> q = new LinkedList<>();
 
-        q.add(n);
-        visited[n] = true;
+        q.add(val);
 
         while (!q.isEmpty()) {
-            time++;
-            int length = q.size();
+            int temp = q.remove();
 
-            for (int i = 0; i < length; i++) { // 반복문 조건 검사식이 i < q.size()였는데 계속 사이즈가 변해서 답이 다르게 나왔음..
-                int t = q.poll();
-                visited[t] = true;
+            if (temp == k) {
+                return;
+            }
 
-                if (t - 1 == k || t + 1 == k || t * 2 == k) {
-                    return;
-                }
+            int back = temp - 1;
+            int front = temp + 1;
+            int jump = temp * 2;
 
-                if (t - 1 >= 0 && !visited[t - 1]) {
-                    q.add(t - 1);
-                    visited[t - 1] = true;
-                }
-                if (t + 1 <= limit && !visited[t + 1]) {
-                    q.add(t + 1);
-                    visited[t + 1] = true;
-                }
-                if (t * 2 <= limit && !visited[t * 2]) {
-                    q.add(t * 2);
-                    visited[t * 2] = true;
-                }
+            if (back >= 0 && arr[back] == 0) {
+                q.add(back);
+                arr[back] = arr[temp] + 1;
+            }
+            if (front <= 100000 && arr[front] == 0) {
+                q.add(front);
+                arr[front] = arr[temp] + 1;
+            }
+            if (jump <= 100000 && arr[jump] == 0) {
+                q.add(jump);
+                arr[jump] = arr[temp] + 1;
             }
         }
     }
