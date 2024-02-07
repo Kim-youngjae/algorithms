@@ -4,53 +4,47 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-
-    static int n;
-    static int[][] node;
-    static boolean[] visited;
+    static int[][] map;
+    static boolean[][] visit;
+    static int s, e, n;
     static int result = -1;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        n = Integer.valueOf(br.readLine()); // 전체 사람 수
+        n = Integer.parseInt(br.readLine());
+        map = new int[n + 1][n + 1];
+        visit = new boolean[n + 1][n + 1];
 
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+        s = Integer.parseInt(st.nextToken());
+        e = Integer.parseInt(st.nextToken());
 
-        // 찾고자 하는 관계
-        int x = Integer.valueOf(st.nextToken()) - 1;
-        int y = Integer.valueOf(st.nextToken()) - 1;
-
-        node = new int[n][n];
-        visited = new boolean[n];
-
-        int m = Integer.valueOf(br.readLine());
+        int m = Integer.parseInt(br.readLine());
 
         for (int i = 0; i < m; i++) {
             st = new StringTokenizer(br.readLine(), " ");
+            int r = Integer.parseInt(st.nextToken());
+            int c = Integer.parseInt(st.nextToken());
 
-            int r = Integer.valueOf(st.nextToken());
-            int c = Integer.valueOf(st.nextToken());
-
-            node[r - 1][c - 1] = node[c - 1][r - 1] = 1;
+            map[r][c] = map[c][r] = 1;
         }
 
-        dfs(x, y, 0);
-
+        dfs(s, e, 0);
         System.out.println(result);
     }
 
-    private static void dfs(int start, int end, int depth) {
-        visited[start] = true; // 방문한 노드에 대해서 방문 표시
-        // 탈출 조건
-        if (start == end) {
-            result = depth;
+    private static void dfs(int s, int e, int chon) {
+
+        if (s == e) {
+            result = chon;
             return;
         }
 
-        for (int i = 0; i < n; i++) {
-            if (node[start][i] == 1 && !visited[i]) {
-                dfs(i, end, depth + 1);
+        for (int i = 1; i <= n; i++) {
+            if (map[s][i] == 1 && !visit[s][i]) {
+                visit[s][i] = visit[i][s] = true;
+                dfs(i, e, chon + 1);
             }
         }
     }
