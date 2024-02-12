@@ -4,60 +4,69 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
+    static int[] floor;
+    // static boolean[] visit;
     static int F, S, G, U, D;
-    static boolean[] visited;
-    static int result = -1;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+        F = Integer.parseInt(st.nextToken());
+        S = Integer.parseInt(st.nextToken());
+        G = Integer.parseInt(st.nextToken());
+        U = Integer.parseInt(st.nextToken());
+        D = Integer.parseInt(st.nextToken());
 
-        F = Integer.valueOf(st.nextToken());
-        S = Integer.valueOf(st.nextToken());
-        G = Integer.valueOf(st.nextToken());
-        U = Integer.valueOf(st.nextToken());
-        D = Integer.valueOf(st.nextToken());
+        floor = new int[F + 1];
+        // visit = new boolean[F + 1];
 
-        visited = new boolean[F + 1];
+        bfs(S);
 
-        bfs();
-
-        if (result == -1) {
-            System.out.println("use the stairs");
-        } else {
-            System.out.println(result - 1);
-        }
     }
 
-    private static void bfs() {
+    private static void bfs(int start) {
         Queue<Integer> q = new LinkedList<>();
 
-        int count = 0;
-
-        q.add(S);
-        visited[S] = true;
+        q.add(start);
+        floor[start] = 1;
+        // visit[start] = true;
 
         while (!q.isEmpty()) {
-            count++;
-            int length = q.size();
+            int cur = q.poll();
+            // visit[cur] = true;
 
-            for (int i = 0; i < length; i++) {
-                int temp = q.poll();
+            if (cur == G) {
+                System.out.println(floor[G] - 1);
+                return;
+            }
 
-                if (temp == G) {
-                    result = count;
-                    return;
+            for (int i = 0; i < 2; i++) {
+                int next;
+
+                if (i == 0)
+                    next = cur + U;
+                else
+                    next = cur - D;
+
+                if (next < 1 || next > F) {
+                    continue;
                 }
 
-                if (temp - D > 0 && !visited[temp - D]) {
-                    q.add(temp - D);
-                    visited[temp - D] = true;
+                if (next == cur) {
+                    continue;
                 }
-                if (temp + U <= F && !visited[temp + U]) {
-                    q.add(temp + U);
-                    visited[temp + U] = true;
+
+                if (floor[next] == 0) { // && !visit[next]
+                    q.add(next);
+                    floor[next] = floor[cur] + 1;
                 }
             }
+        }
+
+        // if (!visit[G]) {
+        if (floor[G] == 0) {
+            System.out.println("use the stairs");
         }
     }
 }
