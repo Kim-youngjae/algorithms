@@ -3,69 +3,40 @@ package com.baekjoon.p14503;
 import java.io.*;
 import java.util.*;
 
-public class Main {
+class Main {
+    static int n, m, cnt;
     static int[][] map;
     static int[] dr = { -1, 0, 1, 0 };
     static int[] dc = { 0, 1, 0, -1 };
-    static int count = 0;
-    static int n;
-    static int m;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        n = Integer.valueOf(st.nextToken());
-        m = Integer.valueOf(st.nextToken());
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
 
-        st = new StringTokenizer(br.readLine(), " ");
+        st = new StringTokenizer(br.readLine());
 
-        int r = Integer.valueOf(st.nextToken());
-        int c = Integer.valueOf(st.nextToken());
-        int d = Integer.valueOf(st.nextToken()); // 로봇 방향 0:북, 1:동, 2: 남, 3:서
+        int sr = Integer.parseInt(st.nextToken());
+        int sc = Integer.parseInt(st.nextToken());
+        int d = Integer.parseInt(st.nextToken());
 
         map = new int[n][m];
 
         for (int i = 0; i < n; i++) {
-            st = new StringTokenizer(br.readLine(), " ");
+            st = new StringTokenizer(br.readLine());
 
             for (int j = 0; j < m; j++) {
-                map[i][j] = Integer.valueOf(st.nextToken());
-            }
-        }
-        count++; // 현재칸 청소 DFS용
-        // bfs(r, c, d);
-        dfs(r, c, d);
-
-        System.out.println(count);
-    }
-
-    private static void dfs(int r, int c, int d) {
-
-        map[r][c] = -1;
-
-        for (int i = 0; i < 4; i++) {
-            int left = (d + 3) % 4;
-            int nr = r + dr[left];
-            int nc = c + dc[left];
-
-            if (map[nr][nc] == 0) {
-                dfs(nr, nc, left);
-                count++;
-                return;
-            } else {
-                d = left;
+                map[i][j] = Integer.parseInt(st.nextToken());
             }
         }
 
-        int back = (d + 2) % 4;
-        int nr = r + dr[back];
-        int nc = c + dc[back];
+        bfs(sr, sc, d);
 
-        if (map[nr][nc] != 1) {
-            dfs(nr, nc, d);
-        }
+        System.out.println(cnt);
+
     }
 
     private static void bfs(int r, int c, int d) {
@@ -74,42 +45,47 @@ public class Main {
         q.add(new Node(r, c));
 
         while (!q.isEmpty()) {
-            Node node = q.poll();
+            Node temp = q.poll();
 
-            // 현재 칸 청소되지 않은 경우 현재 칸을 청소
-            if (map[node.r][node.c] == 0) {
-                map[node.r][node.c] = -1;
-                count++;
+            // 현재 칸이 청소되어있지 않으면 청소
+            if (map[temp.r][temp.c] == 0) {
+                map[temp.r][temp.c] = -1;
+                cnt++;
             }
 
             boolean flag = false;
 
-            // 주변 4칸 확인
+            // 청소가 가능한지 4방향 체크
             for (int i = 0; i < 4; i++) {
-                int left = (d + 3) % 4;
-                int cr = node.r + dr[left];
-                int cc = node.c + dc[left];
-                // 청소되지 않은 칸이 있으면 큐에 넣기
-                if (map[cr][cc] == 0) {
-                    d = left; // 왼쪽으로 돌린 방향으로 업데이트
-                    q.add(new Node(cr, cc));
+                d -= 1;
+
+                if (d < 0) {
+                    d = 3;
+                }
+
+                int nr = temp.r + dr[d];
+                int nc = temp.c + dc[d];
+
+                // 청소가 되있지 않고 방문하지 않았으면
+                if (map[nr][nc] == 0) {
+                    q.add(new Node(nr, nc));
                     flag = true;
                     break;
-                } else {
-                    d = left;
                 }
             }
 
+            // 4곳 모두 청소가 되어있다면
             if (!flag) {
-                // 주변 4칸을 확인했을 때 모두 청소되어 있지 않은 경우
                 int back = (d + 2) % 4;
-                int cr = node.r + dr[back];
-                int cc = node.c + dc[back];
+                // 바라보는 방향을 유지한 채로 한 칸 후진
+                int br = temp.r + dr[back];
+                int bc = temp.c + dc[back];
 
-                if (map[cr][cc] == 1) {
-                    break;
+                // 후진했을 때 벽이면 동작 중지
+                if (map[br][bc] == 1) {
+                    return;
                 } else {
-                    q.add(new Node(cr, cc));
+                    q.add(new Node(br, bc));
                 }
             }
         }
