@@ -1,62 +1,58 @@
 package com.baekjoon.p7795;
 
+import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int[] A;
-    static int[] B;
-    static int N;
-    static int M;
-    static int result = 0;
+    static int n, m;
+    static int[] a, b;
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
 
-        int T = sc.nextInt();
+        int T = Integer.parseInt(in.readLine());
 
-        for (int t = 1; t <= T; t++) {
-            result = 0;
-            N = sc.nextInt();
-            M = sc.nextInt();
+        for (int t = 0; t < T; t++) {
+            StringTokenizer st = new StringTokenizer(in.readLine());
+            n = Integer.parseInt(st.nextToken());
+            m = Integer.parseInt(st.nextToken());
 
-            A = new int[N];
-            B = new int[M];
+            a = new int[n];
+            b = new int[m];
 
-            for (int i = 0; i < N; i++) {
-                A[i] = sc.nextInt(); // A 배열 입력
+            st = new StringTokenizer(in.readLine());
+            for (int i = 0; i < n; i++) {
+                a[i] = Integer.parseInt(st.nextToken());
             }
 
-            for (int i = 0; i < M; i++) {
-                B[i] = sc.nextInt(); // B 배열 입력
-            }
-            Arrays.sort(B); // 이분 탐색을 하려고 하는 대상만 정렬해주면 됨
-
-            for (int i = 0; i < N; i++) {
-                binarySearch(A[i]);
+            st = new StringTokenizer(in.readLine());
+            for (int i = 0; i < m; i++) {
+                b[i] = Integer.parseInt(st.nextToken());
             }
 
-            sb.append(result + "\n");
+            Arrays.sort(b);
+            int res = 0;
+
+            for (int n : a) {
+                int s = 0;
+                int e = m - 1;
+                int cnt = 0;
+
+                while (s <= e) {
+                    int mid = (s + e) / 2;
+                    if (b[mid] < n) {
+                        s = mid + 1;
+                        cnt = mid + 1;
+                    } else {
+                        e = mid - 1;
+                    }
+                }
+                res += cnt;
+            }
+
+            sb.append(res + "\n");
         }
         System.out.println(sb);
-        sc.close();
-    }
-
-    private static void binarySearch(int target) {
-        int start = 0; // 시작
-        int end = M - 1; // 끝 B의 끝
-        int mid = 0; // 가운데
-
-        while (start <= end) { //
-            mid = (start + end) / 2;
-
-            if (target > B[mid]) {
-                start = mid + 1;
-            } else {
-                end = mid - 1;
-            }
-        }
-
-        result += start; // start 보다 작으건 모두 먹을 수 있어서 쌍으로 분류
     }
 }
