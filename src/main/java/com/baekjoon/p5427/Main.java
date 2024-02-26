@@ -4,14 +4,15 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int w, h, sr, sc;
-    static int[][] map;
+    static int w, h;
+    static char[][] map;
     static boolean[][] visit;
+
+    static int[] dr = { 0, 0, 1, -1 };
+    static int[] dc = { 1, -1, 0, 0 };
+
     static Queue<int[]> fire;
     static Queue<int[]> person;
-
-    static int[] dr = { 0, 0, -1, 1 };
-    static int[] dc = { 1, -1, 0, 0 };
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -20,26 +21,23 @@ public class Main {
         int T = Integer.parseInt(br.readLine());
 
         for (int t = 0; t < T; t++) {
-            StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+            StringTokenizer st = new StringTokenizer(br.readLine());
 
             w = Integer.parseInt(st.nextToken());
             h = Integer.parseInt(st.nextToken());
 
-            map = new int[h][w];
+            map = new char[h][w];
             visit = new boolean[h][w];
-
-            fire = new LinkedList<>();
             person = new LinkedList<>();
+            fire = new LinkedList<>();
 
-            // 초기화
             for (int i = 0; i < h; i++) {
                 String str = br.readLine();
                 for (int j = 0; j < w; j++) {
                     char c = str.charAt(j);
-
                     if (c == '*') {
-                        fire.add(new int[] { i, j }); // 불 위치 더해주기
-                    } else if (c == '@') { // 시작 위치 초기화
+                        fire.add(new int[] { i, j });
+                    } else if (c == '@') {
                         person.add(new int[] { i, j, 0 });
                     }
 
@@ -50,7 +48,6 @@ public class Main {
             int res = -1;
 
             escape: while (true) {
-                // 불 번짐
                 burn();
 
                 int size = person.size();
@@ -72,10 +69,12 @@ public class Main {
                 sb.append("IMPOSSIBLE\n");
             }
         }
+
         System.out.println(sb);
     }
 
     private static int canEscape(int r, int c, int time) {
+
         for (int i = 0; i < 4; i++) {
             int nr = r + dr[i];
             int nc = c + dc[i];
@@ -95,14 +94,18 @@ public class Main {
     private static void burn() {
         int size = fire.size();
 
-        for (int i = 0; i < size; i++) {
-            int[] p = fire.poll();
+        for (int s = 0; s < size; s++) {
+            int[] now = fire.poll();
 
-            for (int j = 0; j < 4; j++) {
-                int nr = p[0] + dr[j];
-                int nc = p[1] + dc[j];
+            for (int i = 0; i < 4; i++) {
+                int nr = now[0] + dr[i];
+                int nc = now[1] + dc[i];
 
-                if (nr >= 0 && nr < h && nc >= 0 && nc < w && (map[nr][nc] == '.' || map[nr][nc] == '@')) {
+                if (nr < 0 || nr >= h || nc < 0 || nc >= w) {
+                    continue;
+                }
+
+                if (map[nr][nc] == '.' || map[nr][nc] == '@') {
                     fire.add(new int[] { nr, nc });
                     map[nr][nc] = '*';
                 }
