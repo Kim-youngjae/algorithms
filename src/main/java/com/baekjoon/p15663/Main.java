@@ -1,0 +1,60 @@
+package com.baekjoon.p15663;
+
+import java.util.*;
+
+public class Main {
+    static int N, M;
+    static Set<String> ans = new LinkedHashSet<>();
+    static int[] a, result;
+    static boolean[] v;
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        N = sc.nextInt();
+        M = sc.nextInt();
+
+        a = new int[N];
+        result = new int[M];
+        v = new boolean[N];
+
+        for (int i = 0; i < N; i++) {
+            a[i] = sc.nextInt();
+        }
+
+        Arrays.sort(a);
+
+        dfs(0);
+
+        StringBuilder sb = new StringBuilder();
+        Iterator<String> it = ans.iterator();
+        while (it.hasNext()) {
+            sb.append(it.next());
+        }
+        System.out.println(sb);
+        sc.close();
+    }
+
+    static void dfs(int depth) {
+
+        if (depth == M) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < M; i++) {
+                sb.append(result[i] + " ");
+            }
+            sb.append("\n");
+
+            ans.add(sb.toString());
+            return;
+        }
+
+        for (int i = 0; i < N; i++) {
+            if (!v[i]) {
+                v[i] = true;
+                result[depth] = a[i];
+                dfs(depth + 1);
+                v[i] = false;
+            }
+        }
+    }
+}
