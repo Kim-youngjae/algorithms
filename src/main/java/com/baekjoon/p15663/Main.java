@@ -8,6 +8,8 @@ public class Main {
     static int[] a, result;
     static boolean[] v;
 
+    static StringBuilder sb = new StringBuilder();
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
@@ -26,11 +28,6 @@ public class Main {
 
         dfs(0);
 
-        StringBuilder sb = new StringBuilder();
-        Iterator<String> it = ans.iterator();
-        while (it.hasNext()) {
-            sb.append(it.next());
-        }
         System.out.println(sb);
         sc.close();
     }
@@ -38,22 +35,25 @@ public class Main {
     static void dfs(int depth) {
 
         if (depth == M) {
-            StringBuilder sb = new StringBuilder();
+            // StringBuilder sb = new StringBuilder();
             for (int i = 0; i < M; i++) {
                 sb.append(result[i] + " ");
             }
             sb.append("\n");
-
-            ans.add(sb.toString());
             return;
         }
 
+        int before = 0;
+
         for (int i = 0; i < N; i++) {
             if (!v[i]) {
-                v[i] = true;
-                result[depth] = a[i];
-                dfs(depth + 1);
-                v[i] = false;
+                if (before != a[i]) {
+                    v[i] = true;
+                    result[depth] = a[i];
+                    before = a[i];
+                    dfs(depth + 1);
+                    v[i] = false;
+                }
             }
         }
     }
