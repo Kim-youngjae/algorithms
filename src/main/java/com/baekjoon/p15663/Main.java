@@ -35,7 +35,6 @@ public class Main {
     static void dfs(int depth) {
 
         if (depth == M) {
-            // StringBuilder sb = new StringBuilder();
             for (int i = 0; i < M; i++) {
                 sb.append(result[i] + " ");
             }
