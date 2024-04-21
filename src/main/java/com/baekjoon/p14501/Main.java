@@ -6,12 +6,14 @@ import java.util.*;
 public class Main {
     static int max, N;
     static int[][] arr;
+    static int[] dp;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         N = Integer.parseInt(br.readLine());
         arr = new int[N][2];
+        dp = new int[N + 1];
 
         StringTokenizer st;
         for (int i = 0; i < N; i++) {
@@ -22,23 +24,16 @@ public class Main {
 
         max = Integer.MIN_VALUE;
 
-        dfs(0, 0);
+        for (int i = 0; i < N; i++) {
+            if (i + arr[i][0] <= N) {
+                dp[i + arr[i][0]] = Math.max(dp[i + arr[i][0]], dp[i] + arr[i][1]);
+            }
+
+            dp[i + 1] = Math.max(dp[i + 1], dp[i]);
+        }
+
+        System.out.println(dp[N]);
 
         System.out.println(max);
-    }
-
-    static void dfs(int day, int pay) {
-        if (day >= N) {
-            max = Math.max(max, pay);
-            return;
-        }
-
-        if (day + arr[day][0] <= N) { // 상담을 시작해서 끝나도 아직 퇴사일보다 작다면 상담을 할 수 있다.
-            dfs(day + arr[day][0], pay + arr[day][1]);
-        } else {
-            dfs(day + arr[day][0], pay); // 상담을 퇴사 전까지 끝내지 못하면 일수만 더해서 종료조건에 걸리도록
-        }
-
-        dfs(day + 1, pay); // 1일 ~ 퇴사일까지의 날짜까지 모두 고려하기
     }
 }
