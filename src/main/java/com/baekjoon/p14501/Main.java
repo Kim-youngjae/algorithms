@@ -33,7 +33,5 @@ public class Main {
         }
 
         System.out.println(dp[N]);
-
-        System.out.println(max);
     }
 }
