@@ -4,47 +4,46 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int N;
-    static LinkedList<Integer> a;
-    static LinkedList<Integer> ans;
+    static int N, max;
+    static int[] a, ans;
+    static boolean[] v;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         N = Integer.parseInt(br.readLine());
-        a = new LinkedList<>();
-        ans = new LinkedList<>();
+        a = new int[N];
+        ans = new int[N];
+        v = new boolean[N];
 
         StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
-            a.add(Integer.parseInt(st.nextToken()));
+            a[i] = Integer.parseInt(st.nextToken());
         }
 
-        Collections.sort(a);
+        dfs(0);
 
-        while (!a.isEmpty()) {
-            ans.add(a.pollLast());
+        System.out.println(max);
+    }
 
-            for (int i = 0; i < 2; i++) {
-                if (a.isEmpty()) {
-                    break;
-                }
+    static void dfs(int depth) {
+        if (depth == N) {
+            int sum = 0;
+            for (int i = 0; i < N - 1; i++) {
+                sum += Math.abs(ans[i] - ans[i + 1]);
+            }
 
-                int target = a.pollFirst();
+            max = Math.max(max, sum);
+        }
 
-                if (Math.abs(ans.peekFirst() - target) > Math.abs(ans.peekLast() - target)) {
-                    ans.addFirst(target);
-                } else {
-                    ans.addLast(target);
-                }
+        for (int i = 0; i < N; i++) {
+            if (!v[i]) {
+                v[i] = true;
+                ans[depth] = a[i];
+                dfs(depth + 1);
+                v[i] = false;
             }
         }
 
-        int sum = 0;
-        for (int i = 0; i < N - 1; i++) {
-            sum += Math.abs(ans.get(i) + ans.get(i + 1));
-        }
-
-        System.out.println(sum);
     }
 }
