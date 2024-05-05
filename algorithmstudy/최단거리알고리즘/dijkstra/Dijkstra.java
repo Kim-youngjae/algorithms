@@ -28,6 +28,7 @@ public class Dijkstra {
             int cost = Integer.parseInt(st.nextToken());
 
             graph.get(from).add(new Node(to, cost));
+            graph.get(to).add(new Node(from, cost));
         }
 
         dijkstra(start);
@@ -36,8 +37,7 @@ public class Dijkstra {
     static void dijkstra(int start) {
         boolean[] v = new boolean[N + 1]; // 방문 체크 배열
         int[] dist = new int[N + 1]; // 거리를 체크할 배열
-        int INF = 10000001;
-
+        int INF = 100000001; // 무한대의 비용 설정
         Arrays.fill(dist, INF);
 
         dist[start] = 0;
