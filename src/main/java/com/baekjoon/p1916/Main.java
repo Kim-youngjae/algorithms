@@ -8,7 +8,7 @@ public class Main {
     static List<List<Node>> list;
     static boolean[] v;
     static int[] d;
-    static final int INF = 1000000;
+    static final int INF = 100000000;
 
     static class Node implements Comparable<Node> {
         int index;
