@@ -4,11 +4,27 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int[][] a; // 각 노드 비용
-    static int[] d; // 거리를 저장
-    static boolean[] v; // 방문 노드
-    static final int INF = 1_000_000_000;
     static int N, M;
+    static List<List<Node>> list;
+    static boolean[] v;
+    static int[] d;
+    static final int INF = 1000000;
+
+    static class Node implements Comparable<Node> {
+        int index;
+        int cost;
+
+        Node(int index, int cost) {
+            this.index = index;
+            this.cost = cost;
+        }
+
+        @Override
+        public int compareTo(Node n) {
+            return cost - n.cost;
+        }
+
+    }
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -16,32 +32,28 @@ public class Main {
         N = Integer.parseInt(br.readLine());
         M = Integer.parseInt(br.readLine());
 
-        a = new int[N][N];
-        d = new int[N];
-        v = new boolean[N];
+        list = new ArrayList<>();
+        d = new int[N + 1];
+        Arrays.fill(d, INF);
 
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                a[i][j] = INF;
-            }
+        for (int i = 0; i <= N; i++) {
+            list.add(new ArrayList<>());
         }
 
         StringTokenizer st;
         for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
 
-            int r = Integer.parseInt(st.nextToken()) - 1;
-            int c = Integer.parseInt(st.nextToken()) - 1;
+            int r = Integer.parseInt(st.nextToken());
+            int c = Integer.parseInt(st.nextToken());
             int cost = Integer.parseInt(st.nextToken());
 
-            a[r][c] = cost;
-
+            list.get(r).add(new Node(c, cost));
         }
 
         st = new StringTokenizer(br.readLine());
-
-        int start = Integer.parseInt(st.nextToken()) - 1;
-        int end = Integer.parseInt(st.nextToken()) - 1;
+        int start = Integer.parseInt(st.nextToken());
+        int end = Integer.parseInt(st.nextToken());
 
         dijkstra(start);
 
@@ -49,39 +61,30 @@ public class Main {
     }
 
     static void dijkstra(int start) {
-        // 거리 배열을 시작하는 노드의 거리 정보로 초기화
-        for (int i = 0; i < N; i++) {
-            d[i] = a[start][i];
-        }
 
-        v[start] = true; // 방문 처리
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+        v = new boolean[N + 1];
+        d[start] = 0;
 
-        for (int i = 0; i < N - 2; i++) {
-            int current = getMinIndex(); // 비용이 가장 작은 인덱스를 반환
-            v[current] = true;
+        pq.add(new Node(start, 0));
 
-            // 최소 비용 갱신하기
-            for (int j = 0; j < N; j++) {
-                // 아직 방문하지 않은 (최소 비용이 갱신되지 않은) 노드들을 갱신 해주기
-                if (!v[j]) {
-                    if (d[current] + a[current][j] < d[j]) {
-                        d[j] = d[current] + a[current][j];
+        while (!pq.isEmpty()) {
+            int nowVertex = pq.poll().index;
+
+            if (v[nowVertex]) {
+                continue;
+            }
+
+            v[nowVertex] = true;
+            for (Node next : list.get(nowVertex)) {
+                if (!v[next.index]) {
+                    if (d[next.index] > d[nowVertex] + next.cost) {
+                        d[next.index] = d[nowVertex] + next.cost;
+                        pq.add(new Node(next.index, d[next.index]));
                     }
                 }
             }
         }
-    }
 
-    static int getMinIndex() {
-        int min = INF;
-        int index = 0;
-
-        for (int i = 0; i < N; i++) {
-            if (d[i] < min && !v[i]) {
-                min = d[i];
-                index = i;
-            }
-        }
-        return index;
     }
 }
