@@ -4,31 +4,32 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int max, N;
-    static int[][] arr;
-    static int[] dp;
+    static int N;
+    static int[] T, P, dp;
 
     public static void main(String[] args) throws IOException {
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         N = Integer.parseInt(br.readLine());
-        arr = new int[N][2];
+
+        T = new int[N];
+        P = new int[N];
         dp = new int[N + 1];
 
-        StringTokenizer st;
         for (int i = 0; i < N; i++) {
-            st = new StringTokenizer(br.readLine());
-            arr[i][0] = Integer.parseInt(st.nextToken());
-            arr[i][1] = Integer.parseInt(st.nextToken());
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int t = Integer.parseInt(st.nextToken());
+            int p = Integer.parseInt(st.nextToken());
+
+            T[i] = t;
+            P[i] = p;
         }
 
-        max = Integer.MIN_VALUE;
-
         for (int i = 0; i < N; i++) {
-            if (i + arr[i][0] <= N) {
-                dp[i + arr[i][0]] = Math.max(dp[i + arr[i][0]], dp[i] + arr[i][1]);
+            if (i + T[i] <= N) {
+                dp[i + T[i]] = Math.max(dp[i + T[i]], dp[i] + P[i]);
             }
-
             dp[i + 1] = Math.max(dp[i + 1], dp[i]);
         }
 
