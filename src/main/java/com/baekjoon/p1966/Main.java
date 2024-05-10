@@ -4,74 +4,65 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int ans;
+    static class Node {
+        int idx;
+        int cost;
+
+        Node(int idx, int cost) {
+            this.idx = idx;
+            this.cost = cost;
+        }
+    }
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
         StringBuilder sb = new StringBuilder();
 
         int T = Integer.parseInt(br.readLine());
 
-        for (int t = 0; t < T; t++) {
-            st = new StringTokenizer(br.readLine());
+        while (T-- > 0) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
 
-            ans = 0;
             int N = Integer.parseInt(st.nextToken());
-            int M = Integer.parseInt(st.nextToken()); // 뽑고자 하는 순서 번호
+            int M = Integer.parseInt(st.nextToken());
 
-            LinkedList<Node> q = new LinkedList<>(); // 큐처럼 활용할 리스트
+            LinkedList<Node> q = new LinkedList<>();
             st = new StringTokenizer(br.readLine());
-
             for (int i = 0; i < N; i++) {
-                q.add(new Node(i, Integer.parseInt(st.nextToken())));
+                int cost = Integer.parseInt(st.nextToken());
+                q.add(new Node(i, cost));
             }
 
+            int ans = 1;
             while (!q.isEmpty()) {
-
-                Node target = q.poll();
-                boolean flag = true;
+                Node now = q.peek();
+                boolean hasBigCost = false; // now보다 더 큰 비용이 존재하는지 체크
 
                 for (int i = 0; i < q.size(); i++) {
+                    if (now.cost < q.get(i).cost) {
 
-                    if (target.value < q.get(i).value) { // 큐에 더 큰 중요도가 존재하면
-                        q.add(target); // 제일 뒤로 넣기
-
-                        for (int j = 0; j < i; j++) { // 큰 중요도에 해당하는 큐만큼 뽑고 다시 넣기를 반복
+                        for (int j = 0; j < i; j++) {
                             q.add(q.poll());
                         }
 
-                        flag = false;
+                        hasBigCost = true;
                         break;
                     }
-
                 }
 
-                if (!flag) {
-                    continue;
-                }
+                if (!hasBigCost) { // 더 큰 중요도가 존재하지 않는다면
+                    Node target = q.poll();
 
-                ans++;
-
-                if (target.rank == M) {
-
-                    break;
+                    if (target.idx == M) {
+                        sb.append(ans + "\n");
+                    } else {
+                        ans++;
+                    }
                 }
             }
-            sb.append(ans + "\n");
         }
 
         System.out.println(sb);
 
-    }
-}
-
-class Node {
-    int rank;
-    int value;
-
-    Node(int rank, int value) {
-        this.rank = rank;
-        this.value = value;
     }
 }
