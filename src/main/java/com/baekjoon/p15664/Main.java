@@ -44,7 +44,7 @@ public class Main {
                 v[i] = true;
                 before = now; // 현재 수열을 이전에 뽑았던 수로 갱신
                 res[depth] = arr[i];
-                dfs(from + 1, depth + 1);
+                dfs(i + 1, depth + 1);
                 v[i] = false;
             }
         }
