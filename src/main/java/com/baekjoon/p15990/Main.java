@@ -1,7 +1,6 @@
 package com.baekjoon.p15990;
 
 import java.io.*;
-import java.util.*;
 
 public class Main {
     static final int num = 100001;
