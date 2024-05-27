@@ -3,65 +3,25 @@ package com.baekjoon.p2156;
 import java.io.*;
 
 public class Main {
-    static int N, max;
-    static int[] a;
-    static boolean[] v;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        N = Integer.parseInt(br.readLine());
+        int N = Integer.parseInt(br.readLine());
+        int[] arr = new int[N + 1], dp = new int[N + 1];
 
-        a = new int[N];
-        v = new boolean[N];
-        max = Integer.MIN_VALUE;
-
-        for (int i = 0; i < N; i++) {
-            a[i] = Integer.parseInt(br.readLine());
+        for (int i = 1; i <= N; i++) {
+            arr[i] = Integer.parseInt(br.readLine());
         }
 
-        for (int i = 1; i <= N - (N / 3); i++) {
-            dfs(0, i);
+        dp[1] = arr[1];
+        if (N > 1) {
+            dp[2] = arr[1] + arr[2];
+        }
+        for (int i = 3; i <= N; i++) {
+            dp[i] = Math.max(dp[i - 1], Math.max(dp[i - 2] + arr[i], dp[i - 3] + arr[i - 1] + arr[i]));
         }
 
-        System.out.println(max);
-    }
-
-    static void dfs(int cnt, int m) {
-        if (cnt == m) {
-            int chk = 0;
-
-            if (m >= 3) {
-                for (int i = 0; i < N; i++) {
-                    if (v[i]) {
-                        chk++;
-                    } else {
-                        chk = 0;
-                    }
-                    if (chk == 3) {
-                        return;
-                    }
-                }
-            }
-
-            int sum = 0;
-            for (int i = 0; i < N; i++) {
-                if (v[i]) {
-                    sum += a[i];
-                }
-            }
-
-            max = Math.max(max, sum);
-            return;
-
-        }
-
-        for (int i = 0; i < N; i++) {
-            if (!v[i]) {
-                v[i] = true;
-                dfs(cnt + 1, m);
-                v[i] = false;
-            }
-        }
+        System.out.print(dp[N]);
     }
 }
