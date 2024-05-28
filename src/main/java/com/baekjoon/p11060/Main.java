@@ -5,34 +5,59 @@ import java.util.*;
 
 public class Main {
     static int N;
+    static int[] arr;
+    static boolean[] v;
+
+    static class Node {
+        int idx;
+        int cnt;
+
+        Node(int idx, int cnt) {
+            this.idx = idx;
+            this.cnt = cnt;
+        }
+    }
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         N = Integer.parseInt(br.readLine());
 
-        long[] dp = new long[N + 1];
-        int[] arr = new int[N + 1];
+        arr = new int[N];
 
-        StringTokenizer st;
-        st = new StringTokenizer(br.readLine());
-        for (int i = 1; i <= N; i++) {
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < N; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
-            dp[i] = Integer.MAX_VALUE;
         }
 
-        dp[1] = 0;
-        for (int i = 1; i <= N; i++) {
-            for (int j = 1; j <= arr[i]; j++) {
-                if (i + j <= N)
-                    dp[i + j] = Math.min(dp[i + j], dp[i] + 1);
+        bfs(0);
+    }
+
+    static void bfs(int start) {
+        Queue<Node> q = new ArrayDeque<>();
+        v = new boolean[N];
+
+        v[start] = true;
+        q.add(new Node(start, 0));
+
+        while (!q.isEmpty()) {
+            Node now = q.poll();
+
+            if (now.idx == N - 1) {
+                System.out.println(now.cnt);
+                return;
+            }
+
+            for (int i = 1; i <= arr[now.idx]; i++) {
+                int nextIdx = now.idx + i;
+
+                if (nextIdx < N && !v[nextIdx]) {
+                    v[nextIdx] = true;
+                    q.add(new Node(nextIdx, now.cnt + 1));
+                }
             }
         }
 
-        if (dp[N] == Integer.MAX_VALUE) {
-            System.out.println(-1);
-        } else {
-            System.out.println(dp[N]);
-        }
+        System.out.println(-1);
     }
 }
