@@ -14,10 +14,10 @@ public class Main {
 
         int[] money = new int[N];
 
-        int min = 0, max = 0;
+        int min = 1, max = 1;
         for (int i = 0; i < N; i++) {
             money[i] = Integer.parseInt(br.readLine());
-            Math.max(min, money[i]);
+            min = Math.max(min, money[i]);
             max += money[i]; // 최대 값은 날마다 써야하는 모든 돈의 액수의 총합
         }
 
