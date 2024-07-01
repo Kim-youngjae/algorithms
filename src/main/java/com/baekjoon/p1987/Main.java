@@ -4,11 +4,12 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int R, C, ans;
+    static int R, C;
     static boolean[] v = new boolean[26];
     static int[][] map;
     static int[] dr = { 0, 1, 0, -1 };
     static int[] dc = { 1, 0, -1, 0 };
+    static int ans = 1;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -18,7 +19,6 @@ public class Main {
         R = Integer.parseInt(st.nextToken());
         C = Integer.parseInt(st.nextToken());
         map = new int[R][C];
-        ans = 0;
 
         for (int i = 0; i < R; i++) {
             String input = br.readLine();
@@ -48,6 +48,7 @@ public class Main {
                     dfs(cnt + 1, nr, nc);
                 }
             }
+
             v[map[r][c]] = false;
         }
     }
