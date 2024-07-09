@@ -17,6 +17,7 @@ public class Main {
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
 
+        // 입력
         parent = new int[n + 1];
 
         for (int i = 0; i < n + 1; i++) {
@@ -44,6 +45,7 @@ public class Main {
         System.out.println(sb);
     }
 
+    // 부모를 찾는 함수
     static int find(int x) {
         if (x == parent[x]) {
             return x;
@@ -69,6 +71,7 @@ public class Main {
         }
     }
 
+    // 같은 부모인지 확인하는 함수
     static boolean isUnion(int a, int b) {
         a = find(a);
         b = find(b);
