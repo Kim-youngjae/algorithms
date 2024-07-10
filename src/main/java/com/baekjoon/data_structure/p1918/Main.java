@@ -31,7 +31,7 @@ public class Main {
                 case '-':
                     /*
                      * 스택에 있는 연산자 우선순위가 높다면 스택에서 먼저 뽑아 넣어준다.
-                     * 우선순위가 같다면 스택 안에 먼저 들어있는 연산자 우선순위가 더 높다.
+                     * 우선순위가 같다면 스택 안에 먼저 들어있는 연산자 먼저 꺼내어 문자열에 더해준다.
                      */
                     while (!stack.isEmpty() && priority(stack.peek()) >= priority(now)) {
                         sb.append(stack.pop());
@@ -51,6 +51,10 @@ public class Main {
         sc.close();
     }
 
+    /*
+     * 연산자 우선 순위를 계산하는 메서드
+     * 이 부분을 생각하지 못해서 진행이 안되었다.
+     */
     static int priority(char operator) {
 
         if (operator == '+' || operator == '-') {
