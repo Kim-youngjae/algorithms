@@ -1,4 +1,4 @@
-package com.baekjoon.math.p25083;
+package com.baekjoon.implementation.p25083;
 
 import java.io.*;
 
