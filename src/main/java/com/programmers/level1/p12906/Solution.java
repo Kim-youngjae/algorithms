@@ -3,26 +3,30 @@ package com.programmers.level1.p12906;
 import java.util.*;
 
 public class Solution {
-    public int[] solution(int []arr) {
-        int[] answer;
-        Queue<Integer> q = new LinkedList<>(); // 연속을 제거한 하나의 값만 저장
+    public int[] solution(int[] arr) {
+        int[] answer = {};
 
-        int temp = arr[0];
-        q.add(temp);
+        Stack<Integer> s = new Stack<>();
 
-        for (int i = 1; i < arr.length; i++) {
-            if (temp != arr[i]) {
-                // 현재 연속 되는 수와 다른 값이면
-                temp = arr[i];
-                q.add(temp); // 다른 값을 저장
+        for (int i : arr) {
+
+            if (s.isEmpty()) { // 스택이 비어 있다면 push
+                s.push(i);
+                continue;
+            }
+
+            if (!s.isEmpty() && s.peek() == i) {
+                // 제일 위의 값과 현재 i를 비교 해서 연속된 숫자인지 확인
+                // 연속된 숫자라면 아무것도 하지 않고 다음 반복문으로 넘어가기
+                continue;
+            } else {
+                s.push(i);
             }
         }
 
-        int idx = 0;
-        answer = new int[q.size()];
-
-        while (!q.isEmpty()) {
-            answer[idx++] = q.poll();
+        answer = new int[s.size()];
+        for (int i = 0; i < s.size(); i++) {
+            answer[i] = s.get(i);
         }
 
         return answer;
