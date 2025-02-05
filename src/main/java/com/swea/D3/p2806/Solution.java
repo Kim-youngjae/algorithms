@@ -7,6 +7,7 @@ public class Solution {
     static int[] arr;
     static int N, count;
 
+    // 1차원 배열을 이용한 풀이
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -16,9 +17,9 @@ public class Solution {
         for (int t = 1; t <= T; t++) {
             N = Integer.parseInt(br.readLine());
 
-            arr = new int[N];
+            arr = new int[N]; // 배열 초기화
             count = 0;
-            set(0);
+            set(0); // 퀸 놓기
 
             bw.write("#" + t + " " + count + "\n");
         }
@@ -29,11 +30,11 @@ public class Solution {
     }
 
     private static void set(int depth) {
-        if (depth == N) {
+        if (depth == N) { // n 개의 퀸을 모두 놓을 수 있으면 경우의 수를 카운트
             count++;
             return;
         } else {
-            for (int i = 0; i < N; i++) {
+            for (int i = 0; i < N; i++) { // 행을 돌면서
                 arr[depth] = i;
                 if (canSet(depth)) {
                     set(depth + 1);
